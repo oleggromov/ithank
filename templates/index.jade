@@ -3,3 +3,7 @@ extends layout/layout
 block app
   h1= title
   p Yeah! #{message}
+
+  ul
+    each item in items
+      li= item.text

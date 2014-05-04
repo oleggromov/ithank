@@ -1,11 +1,11 @@
-var env = process.env.ITHANK_ENV || 'development';
 var port = process.env.ITHANK_PORT || 3000;
 
 var fs = require('fs');
 var path = require('path');
 
+// Нужный вариант конфига вытаскивается в зависимости от ITHANK_ENV
 var config = require('server/config/app')({
-    env: env
+    env: process.env.ITHANK_ENV || 'development'
 });
 
 var mongoose = require('mongoose');
@@ -16,7 +16,8 @@ var app = express();
 
 require('server/config')({
     config: config,
-    app: app
+    app: app,
+    mongoose: mongoose
 });
 
 mongoose.connect(config.db);
