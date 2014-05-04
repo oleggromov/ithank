@@ -1,2 +1,5 @@
 design/
 node_modules/
+*.
+!.gitignore
+*.log
