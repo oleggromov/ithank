@@ -1,0 +1,10 @@
+{
+  "name": "ithank",
+  "version": "0.1.0",
+  "devDependencies": {
+    "gulp": "^3.6.2",
+    "gulp-stylus": "^1.0.0",
+    "gulp-concat": "^2.2.0",
+    "gulp-watch": "^0.6.4"
+  }
+}
