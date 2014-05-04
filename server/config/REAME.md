@@ -8,7 +8,7 @@
 * каких-то других модулей (например, passport.js).
 
 
-```
+```js
 // вернет объект с настройками
 // характерными для dev-окружения
 var config = require('server/config/app')({
@@ -30,7 +30,7 @@ require('server/config/routes')({
 
 Можно выполнить все сразу:
 
-```
+```js
 // настроить express, роутинг, ...
 require('server/config', {
     config: {...}
