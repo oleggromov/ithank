@@ -1,13 +1,13 @@
-module.exports = function(mongoose) {
-	var SomethingScheme = new mongoose.Schema({
-		from: String,
-		to: String,
-		text: String,
-		date: { type: Date, default: Date.now }
-	}, {
-		collection: 'something'
-	});
+var mongoose = require('mongoose');
 
-	return mongoose.model('Something', SomethingScheme);
-};
+var SomethingScheme = new mongoose.Schema({
+  from: String,
+  to: String,
+  text: String,
+  date: { type: Date, default: Date.now }
+}, {
+  collection: 'something'
+});
+
+module.exports = mongoose.model('Something', SomethingScheme);
 

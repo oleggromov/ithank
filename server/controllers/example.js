@@ -1,23 +1,16 @@
-module.exports = function(app, config, something) {
-  return function(req, res) {
-  	
+var modelExample = require('models/example');
 
-  	something.find(function(err, items) {
-  		if (err) {
-  			res.json(JSON.stringify(err));
-  			return;
-  		}
+module.exports = function(req, res) {
+  modelExample.find(function(err, items) {
+    if (err) {
+      res.json(JSON.stringify(err));
+      return;
+    }
 
-  		if (!items.length) {
-  			res.send(404, 'Nothing found');
-  			return;
-  		}
-
-  		res.render('index', {
-	      title: 'Я благодарю',
-	      message: 'Hello, world!',
-	      items: items
-	    });
-  	});
-  };
+    res.render('index', {
+      title: 'Я благодарю',
+      message: 'Hello, world!',
+      items: items.length
+    });
+  });
 };

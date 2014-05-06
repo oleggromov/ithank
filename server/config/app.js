@@ -25,6 +25,6 @@ config.production = _.extend(common, {});
  *     env: 'development'
  *   })
  */
-function getConfig(settings) {
-  return config[settings.env];
+function getConfig(env) {
+  return config[env];
 }

@@ -1,5 +1,5 @@
 design/
 node_modules/
 legacy/
-.pid-*
+*.pid
 *.log
