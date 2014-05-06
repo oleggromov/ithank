@@ -5,10 +5,7 @@ module.exports = getConfig;
 
 var common = {
   root: path.resolve(__dirname, '../../'),
-  log: 'node.log',
-  app: {
-    name: 'Ithank'
-  }
+  log: 'node.log'
 };
 
 var config = {};
