@@ -5,7 +5,7 @@ var fs = require('fs');
 var path = require('path');
 
 // Нужный вариант конфига вытаскивается в зависимости от ITHANK_ENV
-var config = require('config/app')(env);
+var config = require('./config.js')[env];
 
 var mongoose = require('mongoose');
 var express = require('express');
