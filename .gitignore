@@ -1,3 +1,5 @@
 design/
 node_modules/
 legacy/
+*.pid
+*.log
