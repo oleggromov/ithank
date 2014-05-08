@@ -1,8 +1,9 @@
-start:
-	ITHANK_ENV=development node server/app.js
+start: connect
+	ITHANK_ENV=development \
+	node server/app.js
 
 connect:
-	mongod --pidfilepath ./mongod.pid &
+	[ ! -f ./mongod.pid ] && mongod --pidfilepath ./mongod.pid &
 
 disconnect:
 	cat mongod.pid | xargs kill
