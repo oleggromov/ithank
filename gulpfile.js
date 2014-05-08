@@ -20,4 +20,4 @@ gulp.task('watch', function() {
 	gulp.watch('templates/**/*.styl', ['styl']);
 });
 
-gulp.task('default', ['styl', 'watch']);
+gulp.task('default', ['styl']);
