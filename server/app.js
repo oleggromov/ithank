@@ -1,38 +1,53 @@
+// Настройки
 var port = process.env.ITHANK_PORT || 3000;
-var env = process.env.ITHANK_ENV || 'development';
+var isDebugEnabled = process.env.ITHANK_ENV === 'development';
 
-var fs = require('fs');
+// Зависимости
 var path = require('path');
-
-// Нужный вариант конфига вытаскивается в зависимости от ITHANK_ENV
-var config = require('./config.js')[env];
-
+var fs = require('fs');
 var mongoose = require('mongoose');
 var express = require('express');
 
-var streamOut = (env === 'development') ? process.stdout : fs.createWriteStream(path.resolve(config.root, config.log));
-var logger = new (require('log'))('info', streamOut);
+// Конфиг и поток для логирования выбираются в зависимости от isDebugEnabled
+var config = require('./config.js');
+var streamOut;
 
+if (isDebugEnabled) {
+	config = config['development'];
+	streamOut = process.stdout;
+} else {
+	config = config['production'];
+	streamOut = fs.createWriteStream(getAbsolutePath(config.log));
+}
+
+// Инстансы
+var logger = new (require('log'))('info', streamOut);
 var app = express();
 
-app.set('views', path.resolve(config.root, 'templates'));
+// Шаблоны
+app.set('views', './templates');
 app.set('view engine', 'jade');
+
+// Роуты
 app.use(app.router);
+app.get('/', require('./controllers/example'));
 
-app.get('/', require('controllers/example'));
-
+// Монга
 mongoose.connect(config.db);
-
 mongoose.connection.on('error', logger.error.bind(logger));
 mongoose.connection.once('open', logger.info.bind(logger, 'Mongo connection established'));
 mongoose.connection.on('disconnected', logger.info.bind(logger, 'Mongo connection closed'));
 
+// Поехали!
 app.listen(port);
-
 logger.info('Express app started on port %s', port);
 
-if (env !== 'development') {
-    fs.writeFile('node.pid', process.pid);
+// В продакшне надо сообщать PID во внешний мир
+if (!isDebugEnabled) {
+    fs.writeFile(getAbsolutePath('node.pid'), process.pid);
 }
 
-module.exports = app;
+// Резолвит путь до абсолютного
+function getAbsolutePath(relativePath) {
+	return path.resolve(config.root, relativePath);
+}
