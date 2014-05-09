@@ -17,7 +17,12 @@ if (isDebugEnabled) {
 	streamOut = process.stdout;
 } else {
 	config = config['production'];
-	streamOut = fs.createWriteStream(getAbsolutePath(config.log));
+	streamOut = fs.createWriteStream(getAbsolutePath(config.log), {
+		// флаг `a` означает, что нужно
+		// открыть файл на запись и поставить
+		// указатель в конец файла
+		flags: 'a'
+	});
 }
 
 // Инстансы
