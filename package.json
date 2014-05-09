@@ -10,8 +10,8 @@
     "npm": "1.2.x"
   },
   "scripts": {
-    "start": "make start",
-    "stop": "make stop"
+    "start": "./scripts/start",
+    "stop": "./scripts/stop"
   },
   "dependencies": {
     "express": "3.4.x",
