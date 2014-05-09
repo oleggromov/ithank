@@ -44,7 +44,7 @@ logger.info('Express app started on port %s', port);
 
 // В продакшне надо сообщать PID во внешний мир
 if (!isDebugEnabled) {
-    fs.writeFile(getAbsolutePath('node.pid'), process.pid);
+	fs.writeFile(getAbsolutePath('node.pid'), process.pid);
 }
 
 // Резолвит путь до абсолютного
