@@ -2,7 +2,7 @@
 
 # Запускаем монгу, если не работает
 if [ ! -f ./mongod.pid ]; then
-	mongod --pidfilepath ./mongod.pid &
+	mongod --pidfilepath ./mongod.pid --logpath --logappend logs/mongod.log &
 fi
 
 # Убиваем предыдущий инстанс приложения
