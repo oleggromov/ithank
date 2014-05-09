@@ -44,10 +44,8 @@ mongoose.connection.on('disconnected', logger.info.bind(logger, 'Mongo connectio
 app.listen(port);
 logger.info('Express app started on port %s', port);
 
-// В продакшне надо сообщать PID во внешний мир
-if (!isDebugEnabled) {
-	fs.writeFile(getAbsolutePath('node.pid'), process.pid);
-}
+// Сообщаем PID во внешний мир
+fs.writeFile(getAbsolutePath('node.pid'), process.pid);
 
 // Резолвит путь до абсолютного
 function getAbsolutePath(relativePath) {

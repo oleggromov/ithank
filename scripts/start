@@ -1,0 +1,15 @@
+#!/bin/bash
+
+# Запускаем монгу, если не работает
+if [ ! -f ./mongod.pid ]; then
+	mongod --pidfilepath ./mongod.pid &
+fi
+
+# Убиваем предыдущий инстанс приложения
+if [ -f ./node.pid ]; then
+	cat ./node.pid | xargs kill
+	rm ./node.pid
+fi
+	
+export ITHANK_ENV=development
+node server/app.js &
