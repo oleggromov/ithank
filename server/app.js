@@ -45,7 +45,7 @@ app.listen(port);
 logger.info('Express app started on port %s', port);
 
 // Сообщаем PID во внешний мир
-fs.writeFile(getAbsolutePath('node.pid'), process.pid);
+fs.writeFile(getAbsolutePath('run/node.pid'), process.pid);
 
 // Резолвит путь до абсолютного
 function getAbsolutePath(relativePath) {

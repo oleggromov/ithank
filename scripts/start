@@ -1,14 +1,14 @@
 #!/bin/bash
 
 # Запускаем монгу, если не работает
-if [ ! -f ./mongod.pid ]; then
-	mongod --pidfilepath ./mongod.pid --logpath --logappend logs/mongod.log &
+if [ ! -f run/mongod.pid ]; then
+	mongod --pidfilepath run/mongod.pid --logpath run/mongod.log --logappend &
 fi
 
 # Убиваем предыдущий инстанс приложения
-if [ -f ./node.pid ]; then
-	cat ./node.pid | xargs kill
-	rm ./node.pid
+if [ -f run/node.pid ]; then
+	cat run/node.pid | xargs kill
+	rm run/node.pid
 fi
 	
 export ITHANK_ENV=development

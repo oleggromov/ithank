@@ -3,7 +3,7 @@ var _ = require('lodash');
 var config = {};
 var common = {
 	root: process.cwd(),
-	log: 'logs/node.log'
+	log: 'run/node.log'
 };
 
 config.development = _.extend(_.clone(common), {

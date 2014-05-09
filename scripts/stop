@@ -1,13 +1,13 @@
 #!/bin/bash
 
 # Убиваем монгу
-if [ -f ./mongod.pid ]; then
-	cat ./mongod.pid | xargs kill
-	rm ./mongod.pid
+if [ -f run/mongod.pid ]; then
+	cat run/mongod.pid | xargs kill
+	rm run/mongod.pid
 fi
 
 # Убиваем приложение
-if [ -f ./node.pid ]; then
-	cat ./node.pid | xargs kill
-	rm ./node.pid
+if [ -f run/node.pid ]; then
+	cat run/node.pid | xargs kill
+	rm run/node.pid
 fi
