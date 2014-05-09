@@ -1,16 +1,15 @@
-var _ = require('lodash-node/underscore');
+var _ = require('lodash');
 
 var config = {};
 var common = {
-  root: process.cwd(),
-  log: 'node.log'
+	root: process.cwd(),
+	log: 'node.log'
 };
 
-config.development = _.extend(common, {
-  db: 'mongodb://localhost/ithank'
+config.development = _.extend(_.clone(common), {
+	db: 'mongodb://localhost/ithank'
 });
 
-config.production = _.extend(common, {});
-
+config.production = _.extend(_.clone(common), {});
 
 module.exports = config;
