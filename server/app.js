@@ -33,6 +33,7 @@ app.set('view engine', 'jade');
 // Роуты
 app.use(app.router);
 app.get('/', require('controllers/example'));
+app.get('/:id', require('controllers/getThank'));
 
 // Монга
 mongoose.connect(config.db);
