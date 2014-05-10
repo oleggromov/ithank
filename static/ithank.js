@@ -1,9 +1,28 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-var $ = require('jquery');
-var backbone = require('backbone');
+var jQuery = require('jquery');
+var Backbone = require('backbone');
+Backbone.$ = jQuery;
 
-console.log($.fn.jquery);
-},{"backbone":2,"jquery":4}],2:[function(require,module,exports){
+var _thanks = require('client/models/thanks.js');
+var ThanksView = require('client/views/thanks.js');
+
+var ThankModel = _thanks.model;
+var ThanksCollection = _thanks.collection;
+
+// Коллекция с фейковыми данными
+var thanks = new ThanksCollection();
+thanks.add([
+	{ from: 'Карпыч', to: 'Громыч', 'for': 'всё на свете' },
+	{ from: 'Громыч', to: 'Карпыч', 'for': 'всё-всё на свете' }
+]);
+
+// вьюшка для проверки
+var view = new ThanksView({
+	model: thanks.first()
+});
+
+view.render();
+},{"backbone":4,"client/models/thanks.js":6,"client/views/thanks.js":7,"jquery":8}],2:[function(require,module,exports){
 //     Backbone.js 1.1.2
 
 //     (c) 2010-2014 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
@@ -2959,6 +2978,37 @@ console.log($.fn.jquery);
 }).call(this);
 
 },{}],4:[function(require,module,exports){
+module.exports=require(2)
+},{"underscore":5}],5:[function(require,module,exports){
+module.exports=require(3)
+},{}],6:[function(require,module,exports){
+var Model = require('backbone').Model;
+var Collection = require('backbone').Collection;
+
+var ThankModel = Model.extend({});
+
+var ThanksCollection = Collection.extend({
+	model: ThankModel
+});
+
+module.exports = {
+	model: ThankModel,
+	collection: ThanksCollection
+};
+},{"backbone":4}],7:[function(require,module,exports){
+var View = require('Backbone').View;
+
+var ThanksView = View.extend({
+	tagName: 'article',
+	className: 'thank',
+	render: function() {
+		console.log('render ThanksView instance');
+		console.log(this.model.attributes);
+	}
+});
+
+module.exports = ThanksView;
+},{"Backbone":2}],8:[function(require,module,exports){
 /*!
  * jQuery JavaScript Library v2.1.1
  * http://jquery.com/
