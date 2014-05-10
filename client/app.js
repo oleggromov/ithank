@@ -1,23 +1,44 @@
-var jQuery = require('jquery');
 var Backbone = require('backbone');
-Backbone.$ = jQuery;
+var $ = require('jquery');
+Backbone.$ = $;
 
-var _thanks = require('client/models/thanks.js');
-var ThanksView = require('client/views/thanks.js');
+var ItemModel = require('client/models/item.js');
+var ListCollection = require('client/models/list.js');
 
-var ThankModel = _thanks.model;
-var ThanksCollection = _thanks.collection;
+var ItemView = require('client/views/item.js');
+var ListView = require('client/views/list.js');
+var AppView = require('client/views/layout.js');
 
-// Коллекция с фейковыми данными
-var thanks = new ThanksCollection();
-thanks.add([
-	{ from: 'Карпыч', to: 'Громыч', 'for': 'всё на свете' },
-	{ from: 'Громыч', to: 'Карпыч', 'for': 'всё-всё на свете' }
-]);
+var IthankRouter = Backbone.Router.extend({
+	routes: {
+		"": "showList",
+		":id": "showThank"
+	},
 
-// вьюшка для проверки
-var view = new ThanksView({
-	model: thanks.first()
+	showList: function() {
+		this.list = new ListCollection();
+		this.listView = new ListView({ model: this.list });
+
+		this.list.on('change', this.listView.render, this.listView);
+		this.list.on('add', this.listView.render, this.listView);
+		this.list.on('reset', this.listView.render, this.listView);
+
+		this.list.fetch();	
+	},
+
+	showThank: function(id) {
+		var thank = this.list.findWhere({ id: Number(id) });
+
+		if (thank) {
+			var thankView = new ItemView({ model: thank, el: $('.thank')[0] });
+			thankView.render();
+		} else {
+			console.log('nothing found');
+		}
+	}
 });
 
-view.render();
+var router = new IthankRouter();
+Backbone.history.start({ pushState: true });
+
+var app = new AppView(router);

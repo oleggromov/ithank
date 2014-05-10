@@ -1,28 +1,49 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-var jQuery = require('jquery');
 var Backbone = require('backbone');
-Backbone.$ = jQuery;
+var $ = require('jquery');
+Backbone.$ = $;
 
-var _thanks = require('client/models/thanks.js');
-var ThanksView = require('client/views/thanks.js');
+var ItemModel = require('client/models/item.js');
+var ListCollection = require('client/models/list.js');
 
-var ThankModel = _thanks.model;
-var ThanksCollection = _thanks.collection;
+var ItemView = require('client/views/item.js');
+var ListView = require('client/views/list.js');
+var AppView = require('client/views/layout.js');
 
-// Коллекция с фейковыми данными
-var thanks = new ThanksCollection();
-thanks.add([
-	{ from: 'Карпыч', to: 'Громыч', 'for': 'всё на свете' },
-	{ from: 'Громыч', to: 'Карпыч', 'for': 'всё-всё на свете' }
-]);
+var IthankRouter = Backbone.Router.extend({
+	routes: {
+		"": "showList",
+		":id": "showThank"
+	},
 
-// вьюшка для проверки
-var view = new ThanksView({
-	model: thanks.first()
+	showList: function() {
+		this.list = new ListCollection();
+		this.listView = new ListView({ model: this.list });
+
+		this.list.on('change', this.listView.render, this.listView);
+		this.list.on('add', this.listView.render, this.listView);
+		this.list.on('reset', this.listView.render, this.listView);
+
+		this.list.fetch();	
+	},
+
+	showThank: function(id) {
+		var thank = this.list.findWhere({ id: Number(id) });
+
+		if (thank) {
+			var thankView = new ItemView({ model: thank, el: $('.thank')[0] });
+			thankView.render();
+		} else {
+			console.log('nothing found');
+		}
+	}
 });
 
-view.render();
-},{"backbone":4,"client/models/thanks.js":6,"client/views/thanks.js":7,"jquery":8}],2:[function(require,module,exports){
+var router = new IthankRouter();
+Backbone.history.start({ pushState: true });
+
+var app = new AppView(router);
+},{"backbone":4,"client/models/item.js":6,"client/models/list.js":7,"client/views/item.js":8,"client/views/layout.js":9,"client/views/list.js":10,"jquery":11}],2:[function(require,module,exports){
 //     Backbone.js 1.1.2
 
 //     (c) 2010-2014 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
@@ -2983,32 +3004,66 @@ module.exports=require(2)
 module.exports=require(3)
 },{}],6:[function(require,module,exports){
 var Model = require('backbone').Model;
+
+module.exports = Model.extend();
+},{"backbone":4}],7:[function(require,module,exports){
 var Collection = require('backbone').Collection;
+var ItemModel = require('client/models/item.js');
 
-var ThankModel = Model.extend({});
-
-var ThanksCollection = Collection.extend({
-	model: ThankModel
+module.exports = Collection.extend({
+	url: '/',
+	model: ItemModel
 });
 
-module.exports = {
-	model: ThankModel,
-	collection: ThanksCollection
-};
-},{"backbone":4}],7:[function(require,module,exports){
-var View = require('Backbone').View;
+},{"backbone":4,"client/models/item.js":6}],8:[function(require,module,exports){
+var View = require('backbone').View;
 
-var ThanksView = View.extend({
+module.exports = View.extend({
 	tagName: 'article',
 	className: 'thank',
+
 	render: function() {
-		console.log('render ThanksView instance');
-		console.log(this.model.attributes);
+		this.$el.find('.thank__name').text(this.model.get('to'));
+		this.$el.find('.thank__for').text(this.model.get('reason'));
+		this.$el.find('strong').text(this.model.get('from'));
+
+		return this;
 	}
 });
+},{"backbone":4}],9:[function(require,module,exports){
+var View = require('backbone').View;
+var $ = require('jquery');
 
-module.exports = ThanksView;
-},{"Backbone":2}],8:[function(require,module,exports){
+module.exports = View.extend({
+	el: $('.layout'),
+
+	events: {
+		'click .layout__arrow': 'changeItem'
+	},
+
+	constructor: function(router) {
+		// Вызываем дефолтный конструктор
+		View.apply(this);
+
+		this.router = router;
+	},
+
+	changeItem: function(e) {
+		e.preventDefault();
+
+		this.router.navigate($(e.target).attr('href'), { trigger: true });
+	}
+});
+},{"backbone":4,"jquery":11}],10:[function(require,module,exports){
+var View = require('Backbone').View;
+
+var ListView = View.extend({
+	tagName: 'ul',
+	className: 'list'
+});
+
+module.exports = ListView;
+},{"Backbone":2}],11:[function(require,module,exports){
 /*!
  * jQuery JavaScript Library v2.1.1
  * http://jquery.com/
