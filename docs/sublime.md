@@ -13,8 +13,7 @@
 	[
 		{
 			"path": "../ithank",
-			"folder_exclude_patterns": ["design", "legacy", "node_modules"],
-			"file_exclude_patterns": [""]
+			"folder_exclude_patterns": ["design", "legacy", "node_modules"]
 		}
 	],
 	"build_systems": 
