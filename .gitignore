@@ -1,6 +1,10 @@
 run/
 design/
-node_modules/
+node_modules/*
+!node_modules/controllers
+!node_modules/models
+!node_modules/client
+
 legacy/
 *.pid
 *.log
