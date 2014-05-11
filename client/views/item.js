@@ -4,10 +4,19 @@ module.exports = View.extend({
 	tagName: 'article',
 	className: 'thank',
 
+	// такая же структура, как и в templates/, только *.js и внутри client/
+	template: require('client/templates/thank/thank.js'),
+
 	render: function() {
-		this.$el.find('.thank__name').text(this.model.get('to'));
-		this.$el.find('.thank__for').text(this.model.get('reason'));
-		this.$el.find('strong').text(this.model.get('from'));
+		var html = this.template({
+			item: {
+				to: this.model.get('to'),
+				from: this.model.get('from'),
+				reason: this.model.get('reason')
+			}
+		});
+
+		this.$el.replaceWith(html);
 
 		return this;
 	}
