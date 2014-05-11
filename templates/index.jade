@@ -2,6 +2,7 @@ extends layout/layout
 
 block app
   h1= title
-  p Yeah! #{message}
+  include thank/thank
 
-  p I've got #{items} items
+  a(href=prevUrl).layout__arrow.layout__arrow_prev#prev Назад
+  a(href=nextUrl).layout__arrow.layout__arrow_next#next Вперёд
