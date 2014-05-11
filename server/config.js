@@ -7,7 +7,7 @@ var common = {
 };
 
 config.development = _.extend(_.clone(common), {
-	db: 'mongodb://localhost/ithank'
+	db: 'mongodb://localhost/ithank_dev'
 });
 
 config.production = _.extend(_.clone(common), {});
