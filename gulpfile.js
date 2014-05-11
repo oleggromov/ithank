@@ -25,7 +25,10 @@ gulp.task('templates', function() {
 
 gulp.task('js', ['templates'], function() {
     return gulp.src('client/app.js')
-        .pipe(browserify())
+        .pipe(browserify({
+            // Включаем сорсмапы
+            debug: true
+        }))
         .pipe(rename('ithank.js'))
         .pipe(gulp.dest('static'));
 });
