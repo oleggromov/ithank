@@ -1,7 +1,3 @@
-var Backbone = require('backbone');
-var $ = require('jquery');
-Backbone.$ = $;
-
 var ItemModel = require('client/models/item.js');
 var ListCollection = require('client/models/list.js');
 

@@ -1,7 +1,4 @@
-var View = require('backbone').View;
-var $ = require('jquery');
-
-module.exports = View.extend({
+module.exports = Backbone.View.extend({
 	el: $('.layout'),
 
 	events: {
@@ -10,7 +7,7 @@ module.exports = View.extend({
 
 	constructor: function(router) {
 		// Вызываем дефолтный конструктор
-		View.apply(this);
+		Backbone.View.apply(this);
 
 		this.router = router;
 	},

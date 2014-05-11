@@ -1,6 +1,4 @@
-var View = require('backbone').View;
-
-module.exports = View.extend({
+module.exports = Backbone.View.extend({
 	tagName: 'article',
 	className: 'thank',
 

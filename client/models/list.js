@@ -1,7 +1,4 @@
-var Collection = require('backbone').Collection;
-var ItemModel = require('client/models/item.js');
-
-module.exports = Collection.extend({
+module.exports = Backbone.Collection.extend({
 	url: '/',
-	model: ItemModel
+	model: require('client/models/item.js')
 });

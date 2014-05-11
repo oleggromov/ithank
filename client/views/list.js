@@ -1,8 +1,4 @@
-var View = require('Backbone').View;
-
-var ListView = View.extend({
+module.exports = Backbone.View.extend({
 	tagName: 'ul',
 	className: 'list'
 });
-
-module.exports = ListView;

@@ -1,3 +1,1 @@
-var Model = require('backbone').Model;
-
-module.exports = Model.extend();
+module.exports = Backbone.Model.extend();
