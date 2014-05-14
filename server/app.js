@@ -9,7 +9,7 @@ var mongoose = require('mongoose');
 var express = require('express');
 
 // Конфиг и поток для логирования выбираются в зависимости от isDebugEnabled
-var config = require('./config.js');
+var config = require('./config');
 var streamOut;
 
 if (isDebugEnabled) {
@@ -54,6 +54,8 @@ logger.info('Express app started on port %s', port);
 
 // Сообщаем PID во внешний мир
 fs.writeFile(getAbsolutePath('run/node.pid'), process.pid);
+
+module.exports = app;
 
 // Резолвит путь до абсолютного
 function getAbsolutePath(relativePath) {
