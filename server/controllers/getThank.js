@@ -1,15 +1,28 @@
 module.exports = function(req, res) {
+	var data = {};
+
 	if (req.params.id % 2) {
-		res.json({
+		data = {
 			from: 'Карпыч',
 			to: 'Громыч',
-			'for': 'всё на свете'
-		});
+			reason: 'всё на свете'
+		};
 	} else {
-		res.json({
+		data = {
 			from: 'Громыч',
 			to: 'Карпыч',
-			'for': 'всё-всё на свете'
+			reason: 'всё-всё на свете'
+		};
+	}
+
+	if (req.isAjax) {
+		res.json(data);
+	} else {
+		res.render('index', {
+			title: 'Я благодарю',
+			item: data,
+			nextUrl: '/3',
+			prevUrl: '/1'
 		});
 	}
-}
+};
