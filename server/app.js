@@ -9,7 +9,7 @@ var mongoose = require('mongoose');
 var express = require('express');
 
 // Конфиг и поток для логирования выбираются в зависимости от isDebugEnabled
-var config = require('./config');
+var config = require('./config.js');
 var streamOut;
 
 if (isDebugEnabled) {
