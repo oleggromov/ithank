@@ -9,7 +9,7 @@ var sample = [
 
 module.exports = function(req, res) {
 	// Пришёл бэкбон
-	if (req.headers['x-requested-with'] === 'XMLHttpRequest') {
+	if (req.isAjax) {
 		res.json(sample);
 	} else {
 		modelExample.find(function(err, items) {

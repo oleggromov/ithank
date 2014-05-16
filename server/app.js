@@ -30,10 +30,17 @@ var app = express();
 app.set('views', './templates');
 app.set('view engine', 'jade');
 
+// Мидлвари
+app.use(function(req, res, next) {
+	req.isAjax = req.headers['x-requested-with'] === 'XMLHttpRequest';
+	next();
+});
+
 // Роуты
 app.use(app.router);
 app.get('/', require('controllers/main'));
 app.get('/:id', require('controllers/getThank'));
+
 
 // Монга
 mongoose.connect(config.db);
