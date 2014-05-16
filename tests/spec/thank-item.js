@@ -2,7 +2,7 @@ var should = require('should');
 var request = require('supertest');
 
 // создаем новый инстант приложения:
-// подняли веб-сервер в разработческом окружении
+// подняли веб-сервер в тестовом окружении
 var app = require('app');
 
 describe('/:id', function() {

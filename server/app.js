@@ -55,7 +55,9 @@ logger.info('Express app started on port %s', port);
 // Сообщаем PID во внешний мир
 fs.writeFile(getAbsolutePath('run/node.pid'), process.pid);
 
-module.exports = app;
+if (process.env.ITHANK_ENV === 'test') {
+    module.exports = app;
+}
 
 // Резолвит путь до абсолютного
 function getAbsolutePath(relativePath) {
