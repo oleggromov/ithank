@@ -4,7 +4,7 @@ node_modules/*
 !node_modules/controllers
 !node_modules/models
 !node_modules/client
+!node_modules/app
 
+client/templates/
 legacy/
-*.pid
-*.log

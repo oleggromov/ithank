@@ -8,6 +8,7 @@ var jade = require('jade');
 var gulp_jade = require('gulp-jade');
 var wrap = require('gulp-wrap');
 var clean = require('gulp-clean');
+var mocha = require('gulp-mocha');
 
 gulp.task('styl', function() {
 	gulp.src('templates/ithank.styl')
@@ -16,33 +17,39 @@ gulp.task('styl', function() {
 });
 
 gulp.task('templates', function() {
-    return gulp.src('templates/**/*.jade')
-        .pipe(gulp_jade({ client: true }))
-        // вставляем в каждый шаблон jade/runtime и дописываем module.exports для реквайра
-        .pipe(wrap('var jade = require("jade/runtime");\n<%= contents %>;\nmodule.exports = template;'))
-        .pipe(gulp.dest('client/templates'));
+	return gulp.src('templates/**/*.jade')
+		.pipe(gulp_jade({ client: true }))
+		// вставляем в каждый шаблон jade/runtime и дописываем module.exports для реквайра
+		.pipe(wrap('var jade = require("jade/runtime");\n<%= contents %>;\nmodule.exports = template;'))
+		.pipe(gulp.dest('client/templates'));
 });
 
 gulp.task('js', ['templates'], function() {
-    return gulp.src('client/app.js')
-        .pipe(browserify({
-            // Включаем сорсмапы
-            debug: true
-        }))
-        .pipe(rename('ithank.js'))
-        .pipe(gulp.dest('static'));
+	return gulp.src('client/app.js')
+		.pipe(browserify({
+			// Включаем сорсмапы
+			debug: true
+		}))
+		.pipe(rename('ithank.js'))
+		.pipe(gulp.dest('static'));
 });
 
 // чистим за собой после сборки
 gulp.task('clean', ['js'], function() {
-    gulp.src('client/templates', { read: false })
-        .pipe(clean());
+	gulp.src('client/templates', { read: false })
+		.pipe(clean());
 });
 
 
 gulp.task('watch', function() {
 	// gulp.watch('templates/**/*.js', ['js']);
 	gulp.watch('templates/**/*.styl', ['styl']);
+});
+
+
+gulp.task('test', function() {
+	gulp.src(['tests/spec/*.js'])
+		.pipe(mocha({ reporter: 'spec' }));
 });
 
 gulp.task('default', ['styl', 'js', 'clean']);
