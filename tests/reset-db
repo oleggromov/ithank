@@ -1,2 +1,2 @@
 #!/bin/bash
-mongoimport -d ithank_dev -c thanks mocks/data.json --jsonArray --drop
+mongoimport -d ithank_dev -c thanks mocks/data-dev.json --jsonArray --drop

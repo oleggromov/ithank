@@ -1,6 +1,6 @@
 // Настройки
 var port = process.env.ITHANK_PORT || 3000;
-var isDebugEnabled = process.env.ITHANK_ENV === 'development';
+var isDebugEnabled = process.env.ITHANK_ENV === 'development' || process.env.ITHANK_ENV === 'test';
 
 // Зависимости
 var path = require('path');
@@ -56,7 +56,7 @@ logger.info('Express app started on port %s', port);
 fs.writeFile(getAbsolutePath('run/node.pid'), process.pid);
 
 if (process.env.ITHANK_ENV === 'test') {
-    module.exports = app;
+	module.exports = app;
 }
 
 // Резолвит путь до абсолютного
