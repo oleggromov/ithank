@@ -5,7 +5,6 @@ module.exports = function(req, res) {
 	// TODO
 	// нужно как-то фильтровать/проверять id?
 	var id = parseInt(req.params.id, 10);
-	var numberItems;
 
 	Q.allSettled([
 		modelThank.count().exec(),
