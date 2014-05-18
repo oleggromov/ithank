@@ -1,28 +1,48 @@
+var modelThank = require('models/thank');
+var Q = require('q');
+
 module.exports = function(req, res) {
-	var data = {};
+	// TODO
+	// нужно как-то фильтровать/проверять id?
+	var id = parseInt(req.params.id, 10);
+	var numberItems;
 
-	if (req.params.id % 2) {
-		data = {
-			from: 'Карпыч',
-			to: 'Громыч',
-			reason: 'всё на свете'
-		};
-	} else {
-		data = {
-			from: 'Громыч',
-			to: 'Карпыч',
-			reason: 'всё-всё на свете'
-		};
-	}
+	Q.allSettled([
+		modelThank.count().exec(),
+		modelThank.findOne({ id: id }).exec()
+	])
+		.then(function(results){
+			var all = results[0].value;
+			var thank = results[1].value;
 
-	if (req.isAjax) {
-		res.json(data);
-	} else {
-		res.render('index', {
-			title: 'Я благодарю',
-			item: data,
-			nextUrl: '/3',
-			prevUrl: '/1'
+			// TODO
+			// обработка ошибок
+
+			if (req.isAjax) {
+				res.json(thank);
+			} else {
+				res.render('index', {
+					title: 'Я благодарю',
+					item: thank,
+					nextUrl: '/' + getPrevNextNumber(id, 'next', [1, all]),
+					prevUrl: '/' + getPrevNextNumber(id, 'prev', [1, all])
+				});
+			}
 		});
-	}
 };
+
+/**
+ * Возращает следующее/предыдущее натуральное число
+ * за указанным, учитывая множество допустимых значений
+ * @param  {Number}  cur  текущее знаение
+ * @param  {String}  dir  направление (next, prev), по умолчанию prev
+ * @param  {Array}   interval
+ */
+function getPrevNextNumber(cur, dir, interval) {
+	var current = cur;
+	var result;
+
+	return (dir === 'next')
+		? ((current < interval[1]) ? ++current : current)
+		: ((current > interval[0]) ? --current : current);
+}
