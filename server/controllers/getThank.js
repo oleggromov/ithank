@@ -11,12 +11,12 @@ module.exports = function(req, res) {
 		modelThank.count().exec(),
 		modelThank.findOne({ id: id }).exec()
 	])
-		.then(function(results){
-			var all = results[0].value;
-			var thank = results[1].value;
-
-			// TODO
-			// обработка ошибок
+		.spread(function(countAll, getThankById){
+			var numberAll = (countAll.state === 'fulfilled') ? countAll.value : id;
+			var thank = (getThankById.state === 'fulfilled') ? getThankById.value : {
+				error: true,
+				message: getThankById.reason
+			};
 
 			if (req.isAjax) {
 				res.json(thank);
@@ -24,8 +24,8 @@ module.exports = function(req, res) {
 				res.render('index', {
 					title: 'Я благодарю',
 					item: thank,
-					nextUrl: '/' + getPrevNextNumber(id, 'next', [1, all]),
-					prevUrl: '/' + getPrevNextNumber(id, 'prev', [1, all])
+					nextUrl: '/' + getPrevNextNumber(id, 'next', [1, numberAll]),
+					prevUrl: '/' + getPrevNextNumber(id, 'prev', [1, numberAll])
 				});
 			}
 		});
