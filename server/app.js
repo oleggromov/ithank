@@ -1,6 +1,5 @@
 // Настройки
 var port = process.env.ITHANK_PORT || 3000;
-var isDebugEnabled = process.env.ITHANK_ENV === 'development' || process.env.ITHANK_ENV === 'test';
 
 // Зависимости
 var path = require('path');
@@ -8,22 +7,11 @@ var fs = require('fs');
 var mongoose = require('mongoose');
 var express = require('express');
 
-// Конфиг и поток для логирования выбираются в зависимости от isDebugEnabled
-var config = require('./config.js');
-var streamOut;
-
-if (isDebugEnabled) {
-	config = config['development'];
-	streamOut = process.stdout;
-} else {
-	config = config['production'];
-	streamOut = fs.createWriteStream(getAbsolutePath(config.log), {
-		flags: 'a'
-	});
-}
+// Конфиг выбираем в зависимости от режима работы приложения.
+var config = require('./config.js')[process.env.ITHANK_ENV];
 
 // Инстансы
-var logger = new (require('log'))('info', streamOut);
+var logger = new (require('log'))('info', config.output);
 var app = express();
 
 // Шаблоны
@@ -53,13 +41,8 @@ app.listen(port);
 logger.info('Express app started on port %s', port);
 
 // Сообщаем PID во внешний мир
-fs.writeFile(getAbsolutePath('run/node.pid'), process.pid);
+fs.writeFile(path.resolve(config.root, 'run/node.pid'), process.pid);
 
 if (process.env.ITHANK_ENV === 'test') {
 	module.exports = app;
-}
-
-// Резолвит путь до абсолютного
-function getAbsolutePath(relativePath) {
-	return path.resolve(config.root, relativePath);
 }
