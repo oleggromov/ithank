@@ -9,6 +9,7 @@ var gulp_jade = require('gulp-jade');
 var wrap = require('gulp-wrap');
 var clean = require('gulp-clean');
 var mocha = require('gulp-mocha');
+var exit = require('gulp-exit');
 
 gulp.task('styl', function() {
 	gulp.src('templates/ithank.styl')
@@ -49,7 +50,8 @@ gulp.task('watch', function() {
 
 gulp.task('test', function() {
 	gulp.src(['tests/spec/*.js'])
-		.pipe(mocha({ reporter: 'spec' }));
+		.pipe(mocha({ reporter: 'spec' }))
+		.pipe(exit());
 });
 
 gulp.task('default', ['styl', 'js', 'clean']);
