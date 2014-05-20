@@ -1,0 +1,11 @@
+#!/bin/bash
+source cd ..
+
+if [ ! -f run/mongod.pid ]; then
+	echo 'Start mongod first!'
+	exit 1
+fi
+
+./tests/set-test-db
+export ITHANK_ENV=test
+gulp test
