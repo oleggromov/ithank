@@ -48,12 +48,12 @@ $ npm i
 $ gulp
 ```
 
-С некоторых пор, собранные файлы, лежащие в `static/`, исключены из репозитория.
-Для упрощения жизни можно сделать post-merge хук
+С некоторых пор собранные файлы, лежащие в `static/`, исключены из репозитория.
+Для упрощения жизни можно сделать `post-merge` хук
 
 ```bash
-touch ./.git/hooks/post-merge
-chmod +x ./git/hooks/post-merge
+touch .git/hooks/post-merge
+chmod +x .git/hooks/post-merge
 ```
 
 и добавить в него сборку:
