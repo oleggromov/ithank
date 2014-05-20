@@ -20,7 +20,7 @@ app.set('view engine', 'jade');
 
 // Мидлвари
 app.use(function(req, res, next) {
-	req.isAjax = req.headers['x-requested-with'] === 'XMLHttpRequest';
+	req.isAjax = req.headers['X-Requested-With'] === 'XMLHttpRequest';
 	next();
 });
 
