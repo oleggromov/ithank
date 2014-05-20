@@ -63,8 +63,8 @@ function getAllResults(req, res, id, result) {
 			// Самая большая проблема в том, что ряд ID может быть не сплошным.
 			// Т.е. идут [1, 2, 3, 4:deleted, 5, 6] — и в таком случае после 3 должен быть 5, а до 5 — 3.
 			// Надо придумать, что с этим делать.
-			var nextId = id + 1 < lastId ? id + 1 : lastId;
-			var prevId = id - 1 > 0 ? id - 1 : 1;
+			var nextId = Math.min(id + 1, lastId);
+			var prevId = Math.max(id - 1, 1);
 
 			// Вот урлы вообще модель должна возвращать, это в её юрисдикции.
 			result.urls.next = '/' + nextId;
