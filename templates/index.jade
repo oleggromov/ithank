@@ -1,8 +1,11 @@
 extends layout/layout
 
 block app
-  h1= title
-  include thank/thank
+	h1= title
+	include thank/thank
 
-  a(href=urls.next).layout__arrow.layout__arrow_prev#prev Назад
-  a(href=urls.prev).layout__arrow.layout__arrow_next#next Вперёд
+	if urls.next
+		a(href=urls.next).layout__arrow.layout__arrow_prev#prev Назад
+
+	if urls.prev
+		a(href=urls.prev).layout__arrow.layout__arrow_next#next Вперёд

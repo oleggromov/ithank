@@ -64,11 +64,12 @@ function getAllResults(req, res, id, result) {
 			// Т.е. идут [1, 2, 3, 4:deleted, 5, 6] — и в таком случае после 3 должен быть 5, а до 5 — 3.
 			// Надо придумать, что с этим делать.
 			var nextId = Math.min(id + 1, lastId);
-			var prevId = Math.max(id - 1, 1);
+			// Убрать нафиг хардкод
+			var prevId = id == 1 ? null : Math.max(id - 1, 1);
 
 			// Вот урлы вообще модель должна возвращать, это в её юрисдикции.
-			result.urls.next = '/' + nextId;
-			result.urls.prev = '/' + prevId;
+			if (nextId) result.urls.next = '/' + nextId;
+			if (prevId) result.urls.prev = '/' + prevId;
 		} else {
 			result.status = false;
 			result.message = getThankById.reason;

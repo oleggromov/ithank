@@ -2,12 +2,37 @@ var should = require('should');
 var request = require('supertest');
 var app = require('app');
 
+var data = require('../mocks/data-test.json');
+var jade = require('jade');
+
 describe('Ручка /:id', function() {
-	it('HTML в ответ на обычный запрос', function(done) {
+	it('правильный HTML в ответ на обычный запрос', function(done) {
+		var testId = 1;
+
 		request(app)
-			.get('/1')
+			.get('/' + testId)
 			.expect('Content-Type', 'text/html; charset=utf-8')
-			.expect(200, done);
+			.expect(200)
+			.end(function(err, res) {
+				if (err) throw err;
+
+				jade.renderFile(
+					'templates/index.jade', 
+					{
+						urls: {
+							prev: null,
+							next: '/2'
+						},
+						title: 'Я благодарю',
+						item: data[testId - 1]
+					}, 
+					function(err, html) {
+						if (err) throw err;
+						res.text.should.equal(html);	
+						done();
+					}
+				);
+			});
 	});
 
 	it('JSON в ответ на X-Requested-With: XMLHttpRequest', function(done) {
