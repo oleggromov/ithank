@@ -24,22 +24,23 @@ describe('Ручка /:id', function() {
 			.set('x-requested-with', 'XMLHttpRequest')
 			.expect(200)
 			.end(function(err, res) {
-				res.body.should.have.properties('id', 'from', 'to', 'reason');
+				res.body.should.have.properties('status', 'item');
+				res.body.item.should.have.properties('id', 'from', 'to', 'reason');
 				
-				res.body.id.should
+				res.body.item.id.should
 					.be.a.Number
 					.and.be.above(0);
 
-				res.body.reason.should
+				res.body.item.reason.should
 					.be.a.String
 					.and.be.not.empty;
 
-				res.body.from.should.have.properties('sex', 'name', 'nameGenetive', 'idVk');
-				res.body.to.should.have.properties('sex', 'name', 'nameGenetive', 'idVk');
+				res.body.item.from.should.have.properties('sex', 'name', 'nameGenetive', 'idVk');
+				res.body.item.to.should.have.properties('sex', 'name', 'nameGenetive', 'idVk');
 
 				var users = ['from', 'to'];
 				for (var i = 0, max = users.length; i < max; i++) {
-					with (res.body[users[i]]) {
+					with (res.body.item[users[i]]) {
 						sex.should
 							.be.a.String
 							.and.have.length(1);
