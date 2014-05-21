@@ -101,7 +101,7 @@ describe('Ручка /:id', function() {
 
 	it('JSON: ошибка, когда просим слишком большой ID', function(done) {
 		request(app)
-			.get('/99999999999999999')
+			.get('/99999999999')
 			.set('x-requested-with', 'XMLHttpRequest')
 			.expect(200)
 			.end(
@@ -124,6 +124,7 @@ describe('Ручка /:id', function() {
 function isErrorReturned(done) {
 	return function(err, res) {
 		res.body.should.have.properties('status', 'message');
+
 		res.body.status.should.be.false;
 		res.body.message
 			.should.be.a.String
