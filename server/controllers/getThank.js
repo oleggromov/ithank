@@ -24,7 +24,7 @@ module.exports = function(req, res) {
 		result.status = false;
 		result.message = 'Incorrect ID';
 
-		serveResult(result);
+		serveResult(req, res, result);
 		return;
 	}
 
@@ -57,7 +57,7 @@ function getAllResults(req, res, id, result) {
 		var numberAll = (countAll.state === 'fulfilled') ? countAll.value : id;
 
 		if (getThankById.state === 'fulfilled') {
-			result.thank = getThankById.value;
+			result.item = getThankById.value;
 
 			// Кажется, так проще.
 			// Самая большая проблема в том, что ряд ID может быть не сплошным.
@@ -94,16 +94,13 @@ function serveResult(req, res, result) {
 		res.json(result);
 		return;
 	}
-
+	
 	res.render(
 		'index', {
 			// Что-то полезное надо писать в тайтл.
 			title: 'Я благодарю',
-			item: null,
-			thank: result.thank,
-			// Урлы куда-то наверное нужны, но надо подумать.
-			nextUrl: result.urls.next,
-			prevUrl: result.urls.prev
+			item: result.item,
+			urls: result.urls
 		}
 	);
 }
