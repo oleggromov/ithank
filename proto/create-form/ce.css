@@ -1,0 +1,55 @@
+html,
+body {
+	margin: 0;
+	padding: 0;
+	font: normal 18px "PT Sans", sans-serif;
+}
+
+.thank {
+	position: relative;
+	width: 600px;
+	height: 400px;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	border: 40px solid brown;
+	margin: 0 auto;
+	text-align: center;
+}
+
+.from {
+	position: absolute;
+	right: 10px;
+	bottom: 10px;
+}
+
+.wrap {
+	display: table;
+	width: 100%;
+	height: 100%;
+}
+
+.container {
+	display: table-cell;
+	vertical-align: middle;
+	font-size: 24px;
+}
+
+
+.input {
+	display: inline;
+	color: #08a;
+	border-bottom: 1px dashed rgba(0,127,192,.5);
+	cursor: pointer;
+}
+	
+	.input:focus {
+		outline: none;
+		color: red;
+		border-bottom-color: transparent;
+	}
+
+	.input_full {
+		color: black;
+		border-bottom-color: rgba(0,0,0,.5);
+	}
