@@ -2,25 +2,27 @@ html,
 body {
 	margin: 0;
 	padding: 0;
-	font: normal 18px "PT Sans", sans-serif;
 }
 
 .thank {
 	position: relative;
 	width: 600px;
 	height: 400px;
+	padding: 20px 20px 60px 20px;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
-	border: 40px solid brown;
 	margin: 0 auto;
+	border: 40px solid brown;
 	text-align: center;
+	font: normal 36px "PT Sans", sans-serif;
 }
 
 .from {
 	position: absolute;
 	right: 10px;
 	bottom: 10px;
+	font-size: 18px;
 }
 
 .wrap {
@@ -32,7 +34,8 @@ body {
 .container {
 	display: table-cell;
 	vertical-align: middle;
-	font-size: 24px;
+	max-width: 480px;
+	max-height: 240px;
 }
 
 
