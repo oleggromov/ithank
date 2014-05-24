@@ -12,23 +12,11 @@ var Router = Backbone.Router.extend({
 	],
 
 	constructor: function(app) {
-		_.each(this._routes, function(el) {
-			this.route(el.route, el.action);
-		}.bind(this));
-
 		this.app = app;
-	},
 
-	goHome: function() {
-		this.app.goHome();
-	},
-
-	showThank: function(id) {
-		this.app.showThank(id);
-	},
-
-	showForm: function() {
-		this.app.showForm();
+		_.each(this._routes, function(el) {
+			this.route(el.route, el.action, this.app[el.action].bind(this.app));
+		}.bind(this));
 	},
 
 	navigateToIfRouted: function(link) {
