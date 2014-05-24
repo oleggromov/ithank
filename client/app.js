@@ -68,17 +68,6 @@ var AppView = Backbone.View.extend({
 		this.$fillet.empty().append(this.createForm.render().el);
 		this.$earlier.addClass('ithank__show_hidden');
 		this.$later.addClass('ithank__show_hidden');
-
-		this.router.navigate('/write');
-	},
-
-	parseThankLink: function(e) {
-		e.preventDefault();
-		var id = $(e.target).attr('href').match(/\d+/)[0];
-
-		if (!id) return;
-
-		this.showThank(Number(id));
 	},
 
 	showThank: function(id) {
@@ -106,8 +95,6 @@ var AppView = Backbone.View.extend({
 		} else {
 			this.$later.addClass('ithank__show_hidden');
 		}
-
-		this.router.navigate(this.collection.getUrlById(id));
 	},
 
 	goHome: function() {
