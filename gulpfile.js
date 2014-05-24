@@ -12,8 +12,9 @@ var mocha = require('gulp-mocha');
 var exit = require('gulp-exit');
 
 gulp.task('styl', function() {
-	gulp.src('templates/ithank.styl')
+	gulp.src('templates/blocks.styl')
 		.pipe(stylus({ errors: true }))
+		.pipe(rename('ithank.css'))
 		.pipe(gulp.dest('static'));
 });
 

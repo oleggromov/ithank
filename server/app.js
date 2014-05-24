@@ -27,7 +27,7 @@ var logger = new (require('log'))('info', streamOut);
 var app = express();
 
 // Шаблоны
-app.set('views', './templates');
+app.set('views', 'templates');
 app.set('view engine', 'jade');
 
 // Мидлвари
@@ -38,9 +38,16 @@ app.use(function(req, res, next) {
 
 // Роуты
 app.use(app.router);
-app.get('/', require('controllers/main'));
+
+app.get('/api/', function(req, res) {
+	res.json({
+		success: 'false'
+	});
+});	
+
 app.get('/:id', require('controllers/getThank'));
 
+app.get('/', require('controllers/redirect'));
 
 // Монга
 mongoose.connect(config.db);

@@ -7,14 +7,10 @@ module.exports = Backbone.View.extend({
 
 	render: function() {
 		var html = this.template({
-			item: {
-				to: this.model.get('to'),
-				from: this.model.get('from'),
-				reason: this.model.get('reason')
-			}
+			item: this.model.toJSON()
 		});
 
-		this.$el.replaceWith(html);
+		this.setElement($(html));
 
 		return this;
 	}

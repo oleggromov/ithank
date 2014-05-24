@@ -1,40 +1,63 @@
-var ItemModel = require('client/models/item.js');
-var ListCollection = require('client/models/list.js');
+var Item = require('client/models/item.js');
+var Items = require('client/models/items.js');
 
 var ItemView = require('client/views/item.js');
-var ListView = require('client/views/list.js');
-var AppView = require('client/views/layout.js');
+var FormView = require('client/views/form.js');
 
-var IthankRouter = Backbone.Router.extend({
-	routes: {
-		"": "showList",
-		":id": "showThank"
+var AppView = Backbone.View.extend({
+	el: $('.layout'),
+
+	events: {
+		'click .ithank__show': 'showThank',
+		'click .ithank__say': 'showForm',
+		'click .ithank__title-link': 'goHome'
 	},
 
-	showList: function() {
-		this.list = new ListCollection();
-		this.listView = new ListView({ model: this.list });
+	constructor: function(options) {
+		Backbone.View.call(this, options);
 
-		this.list.on('change', this.listView.render, this.listView);
-		this.list.on('add', this.listView.render, this.listView);
-		this.list.on('reset', this.listView.render, this.listView);
+		var Router = Backbone.Router.extend({});
+		this.router = new Router;
 
-		this.list.fetch();	
+		this.collection.set([
+			{ "id": 1, "to": { "sex": "M", "name": "Виктор Карпов", "nameGenetive": "Виктору Карпову", "idVk": "1" }, "from": { "sex": "M", "name": "Олег Громов", "nameGenetive": "Олегу Громову", "idVk": "2" }, "reason": "всё хорошее" },
+			{ "id": 3, "to": { "sex": "M", "name": "Олег Громов", "nameGenetive": "Олегу Громову", "idVk": "2" }, "from": { "sex": "M", "name": "Виктор Карпов", "nameGenetive": "Виктору Карпову", "idVk": "1" }, "reason": "много-много хороших впечатлений" },
+			{ "id": 2, "to": { "sex": "M", "name": "Виктор Карпов", "nameGenetive": "Виктору Карпову", "idVk": "1" }, "from": { "sex": "M", "name": "Олег Громов", "nameGenetive": "Олегу Громову", "idVk": "2" }, "reason": "отличную работу!" }
+		]);
 	},
 
-	showThank: function(id) {
-		var thank = this.list.findWhere({ id: Number(id) });
+	showForm: function(e) {
+		e.preventDefault();
 
-		if (thank) {
-			var thankView = new ItemView({ model: thank, el: $('.thank')[0] });
-			thankView.render();
-		} else {
-			console.log('nothing found');
+		if (!this.createForm) {
+			this.createForm = new FormView;
 		}
+
+		this.$('.ithank__fillet').empty().append(this.createForm.render().el);
+	},
+
+	showThank: function(e) {
+		e.preventDefault();
+
+		var id = $(e.target).attr('href').match(/\d+/)[0];
+		var model = this.collection.get(id);
+
+		if (!id || !model) throw new Error('Fuck noooo!');
+
+		var view = new ItemView({ model: model });
+		this.$('.ithank__fillet').empty().append(view.render().el);
+
+		this.router.navigate('/' + id);
+	},
+
+	goHome: function(e) {
+		e.preventDefault();
 	}
 });
 
-var router = new IthankRouter();
-Backbone.history.start({ pushState: true });
 
-var app = new AppView(router);
+var app = new AppView({
+	collection: new Items
+});
+
+Backbone.history.start({ pushState: true });
