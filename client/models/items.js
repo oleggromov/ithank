@@ -2,13 +2,13 @@ module.exports = Backbone.Collection.extend({
 	url: '/api/?m=list',
 	model: require('client/models/item.js'),
 
-	getSiblingUrlById: function(type, model) {
+	getSiblingUrlByModel: function(which, model) {
 		var index = this.indexOf(model);
 		var found;
 
-		if (type === 'earlier') {
+		if (which === 'earlier') {
 			found = this.at(index + 1);
-		} else if (type === 'later') {
+		} else if (which === 'later') {
 			found = this.at(index - 1);
 		}
 
@@ -17,12 +17,8 @@ module.exports = Backbone.Collection.extend({
 		return this.getUrlById(found.get('id'));	
 	},
 
-	getLastUrlByNow: function() {
-		this.filter(function(thank) {
-			console.log(thank.toJSON());
-		});
-
-		return this.getUrlById(10);
+	getLastId: function() {
+		return this.at(0).get('id');
 	},
 
 	getUrlById: function(id) {

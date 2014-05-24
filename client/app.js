@@ -4,20 +4,66 @@ var Items = require('client/models/items.js');
 var ItemView = require('client/views/item.js');
 var FormView = require('client/views/form.js');
 
+var Router = Backbone.Router.extend({
+	_routes: [
+		{ route: /^$/, action: 'goHome' },
+		{ route: /^(\d+)$/, action: 'showThank' },
+		{ route: 'write', action: 'showForm' }
+	],
+
+	constructor: function(app) {
+		_.each(this._routes, function(el) {
+			this.route(el.route, el.action);
+		}.bind(this));
+
+		this.app = app;
+	},
+
+	goHome: function() {
+		this.app.goHome();
+	},
+
+	showThank: function(id) {
+		this.app.showThank(id);
+	},
+
+	showForm: function() {
+		this.app.showForm();
+	},
+
+	navigateToIfRouted: function(link) {
+		link = link.replace(/^\//, '');
+
+		var isRouted = _.find(this._routes, function(el) {
+			return link.match(el.route) !== null;
+		});
+
+		if (isRouted) {
+			this.navigate(link, true);	
+		}
+
+		return isRouted;
+	}
+});
+
+
 var AppView = Backbone.View.extend({
 	el: $('.layout'),
 
 	events: {
-		'click .ithank__show': 'showThank',
-		'click .ithank__say': 'showForm',
-		'click .ithank__title-link': 'goHome'
+		'click a': 'routeToLink'
+	},
+
+	routeToLink: function(e) {
+		if (this.router.navigateToIfRouted($(e.target).attr('href'))) {
+			e.preventDefault();
+		}
 	},
 
 	constructor: function(options) {
 		Backbone.View.call(this, options);
 
-		var Router = Backbone.Router.extend({});
-		this.router = new Router;
+		this.router = new Router(this);
 
 		this.collection.set(require('../tests/mocks/list-sparse.js'));
 
@@ -26,28 +72,36 @@ var AppView = Backbone.View.extend({
 		this.$later = this.$('.ithank__show_later');
 	},
 
-	showForm: function(e) {
-		e.preventDefault();
-
+	showForm: function() {
 		if (!this.createForm) {
 			this.createForm = new FormView;
 		}
 
 		this.$fillet.empty().append(this.createForm.render().el);
+		this.$earlier.addClass('ithank__show_hidden');
+		this.$later.addClass('ithank__show_hidden');
+
+		this.router.navigate('/write');
 	},
 
-	showThank: function(e) {
+	parseThankLink: function(e) {
 		e.preventDefault();
-
 		var id = $(e.target).attr('href').match(/\d+/)[0];
+
+		if (!id) return;
+
+		this.showThank(Number(id));
+	},
+
+	showThank: function(id) {
 		var model = this.collection.get(id);
 
 		if (!id || !model) throw new Error(JSON.stringify({ id: id, model: model }));
 
 		var view = new ItemView({ model: model });
 
-		var earlierUrl = this.collection.getSiblingUrl('earlier', model);
-		var laterUrl = this.collection.getSiblingUrl('later', model);
+		var earlierUrl = this.collection.getSiblingUrlByModel('earlier', model);
+		var laterUrl = this.collection.getSiblingUrlByModel('later', model);
 
 		this.$fillet.empty().append(view.render().el);
 
@@ -68,8 +122,8 @@ var AppView = Backbone.View.extend({
 		this.router.navigate(this.collection.getUrlById(id));
 	},
 
-	goHome: function(e) {
-		e.preventDefault();
+	goHome: function() {
+		this.showThank(this.collection.getLastId());
 	}
 });
 
@@ -78,4 +132,7 @@ var app = new AppView({
 	collection: new Items
 });
 
-Backbone.history.start({ pushState: true });
+Backbone.history.start({ 
+	pushState: true,
+	silent: true
+});
