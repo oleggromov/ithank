@@ -19,11 +19,11 @@ var AppView = Backbone.View.extend({
 		var Router = Backbone.Router.extend({});
 		this.router = new Router;
 
-		this.collection.set([
-			{ "id": 1, "to": { "sex": "M", "name": "Виктор Карпов", "nameGenetive": "Виктору Карпову", "idVk": "1" }, "from": { "sex": "M", "name": "Олег Громов", "nameGenetive": "Олегу Громову", "idVk": "2" }, "reason": "всё хорошее" },
-			{ "id": 3, "to": { "sex": "M", "name": "Олег Громов", "nameGenetive": "Олегу Громову", "idVk": "2" }, "from": { "sex": "M", "name": "Виктор Карпов", "nameGenetive": "Виктору Карпову", "idVk": "1" }, "reason": "много-много хороших впечатлений" },
-			{ "id": 2, "to": { "sex": "M", "name": "Виктор Карпов", "nameGenetive": "Виктору Карпову", "idVk": "1" }, "from": { "sex": "M", "name": "Олег Громов", "nameGenetive": "Олегу Громову", "idVk": "2" }, "reason": "отличную работу!" }
-		]);
+		this.collection.set(require('../tests/mocks/list-sparse.js'));
+
+		this.$fillet = this.$('.ithank__fillet');
+		this.$earlier = this.$('.ithank__show_earlier');
+		this.$later = this.$('.ithank__show_later');
 	},
 
 	showForm: function(e) {
@@ -33,7 +33,7 @@ var AppView = Backbone.View.extend({
 			this.createForm = new FormView;
 		}
 
-		this.$('.ithank__fillet').empty().append(this.createForm.render().el);
+		this.$fillet.empty().append(this.createForm.render().el);
 	},
 
 	showThank: function(e) {
@@ -42,12 +42,30 @@ var AppView = Backbone.View.extend({
 		var id = $(e.target).attr('href').match(/\d+/)[0];
 		var model = this.collection.get(id);
 
-		if (!id || !model) throw new Error('Fuck noooo!');
+		if (!id || !model) throw new Error(JSON.stringify({ id: id, model: model }));
 
 		var view = new ItemView({ model: model });
-		this.$('.ithank__fillet').empty().append(view.render().el);
 
-		this.router.navigate('/' + id);
+		var earlierUrl = this.collection.getSiblingUrl('earlier', model);
+		var laterUrl = this.collection.getSiblingUrl('later', model);
+
+		this.$fillet.empty().append(view.render().el);
+
+		if (earlierUrl) {
+			this.$earlier.attr('href', earlierUrl);
+			this.$earlier.removeClass('ithank__show_hidden');
+		} else {
+			this.$earlier.addClass('ithank__show_hidden');
+		}
+
+		if (laterUrl) {
+			this.$later.attr('href', laterUrl);
+			this.$later.removeClass('ithank__show_hidden');
+		} else {
+			this.$later.addClass('ithank__show_hidden');
+		}
+
+		this.router.navigate(this.collection.getUrlById(id));
 	},
 
 	goHome: function(e) {

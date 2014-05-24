@@ -1,3 +1,3 @@
 module.exports = function(req, res) {
-	res.redirect('/3');
+	res.redirect('/10');
 };
