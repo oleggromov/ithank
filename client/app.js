@@ -74,29 +74,30 @@ var AppView = Backbone.View.extend({
 		if (!id || !model) throw new Error(JSON.stringify({ id: id, model: model }));
 
 		var view = new ItemView({ model: model });
-
-		var earlierUrl = this.collection.getSiblingUrlByModel('earlier', model);
-		var laterUrl = this.collection.getSiblingUrlByModel('later', model);
-
 		this.$fillet.empty().append(view.render().el);
 
-		if (earlierUrl) {
-			this.$earlier.attr('href', earlierUrl);
+		var siblings = this.collection.getSiblingsUrls(model);
+		this._showUrls(siblings);
+	},
+
+	goHome: function() {
+		this.showThank(this.collection.getLastId());
+	},
+
+	_showUrls: function(urls) {
+		if (urls.earlier) {
+			this.$earlier.attr('href', urls.earlier);
 			this.$earlier.removeClass('ithank__show_hidden');
 		} else {
 			this.$earlier.addClass('ithank__show_hidden');
 		}
 
-		if (laterUrl) {
-			this.$later.attr('href', laterUrl);
+		if (urls.later) {
+			this.$later.attr('href', urls.later);
 			this.$later.removeClass('ithank__show_hidden');
 		} else {
 			this.$later.addClass('ithank__show_hidden');
 		}
-	},
-
-	goHome: function() {
-		this.showThank(this.collection.getLastId());
 	}
 });
 

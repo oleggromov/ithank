@@ -2,19 +2,15 @@ module.exports = Backbone.Collection.extend({
 	url: '/api/?m=list',
 	model: require('client/models/item.js'),
 
-	getSiblingUrlByModel: function(which, model) {
+	getSiblingsUrls: function(model) {
 		var index = this.indexOf(model);
-		var found;
+		var earlier = this.at(index + 1);
+		var later = this.at(index - 1);
 
-		if (which === 'earlier') {
-			found = this.at(index + 1);
-		} else if (which === 'later') {
-			found = this.at(index - 1);
-		}
-
-		if (!found) return null;
-
-		return this.getUrlById(found.get('id'));	
+		return {
+			earlier: earlier ? this.getUrlById(earlier.get('id')) : null,
+			later: later ? this.getUrlById(later.get('id')) : null
+		};
 	},
 
 	getLastId: function() {
