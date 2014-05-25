@@ -1,20 +1,17 @@
 var mongoose = require('mongoose');
 var Q = require('q');
 
+var user = {
+	sex: String,
+	name: String,
+	nameGenetive: String,
+	idVk: Number
+};
+
 var schemaThank = new mongoose.Schema({
 	id: Number,
-	from: {
-		sex: String,
-		name: String,
-		nameGenetive: String,
-		idVk: Number
-	},
-	to: {
-		sex: String,
-		name: String,
-		nameGenetive: String,
-		idVk: Number
-	},
+	from: user,
+	to: user,
 	date: {
 		type: Date,
 		default: Date.now
