@@ -5,18 +5,12 @@ var ItemView = require('client/views/item.js');
 var FormView = require('client/views/form.js');
 
 var Router = Backbone.Router.extend({
-	_routes: [
-		{ route: /^$/, action: 'goHome' },
-		{ route: /^(\d+)$/, action: 'showThank' },
-		{ route: 'write', action: 'showForm' }
-	],
-
-	constructor: function(app) {
-		this.app = app;
-
-		_.each(this._routes, function(el) {
-			this.route(el.route, el.action, this.app[el.action].bind(this.app));
+	constructor: function(routes) {
+		_.each(routes, function(rule) {
+			this.route(rule.route, rule.name, rule.action);
 		}.bind(this));
+
+		this._routes = routes;
 	},
 
 	navigateToIfRouted: function(link) {
@@ -51,7 +45,11 @@ var AppView = Backbone.View.extend({
 	constructor: function(options) {
 		Backbone.View.call(this, options);
 
-		this.router = new Router(this);
+		this.router = new Router([
+			{ route: /^$/, name: 'home', action: this.goHome.bind(this) },
+			{ route: /^(\d+)$/, name: 'thank', action: this.showThank.bind(this) },
+			{ route: 'write', name: 'form', action: this.showForm.bind(this) }
+		]);
 
 		this.collection.set(require('../tests/mocks/list-sparse.js'));
 
