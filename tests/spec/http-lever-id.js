@@ -1,6 +1,6 @@
 var should = require('should');
 var request = require('supertest');
-var app = require('app');
+var app = require('../../server/app.js');
 
 var data = require('../mocks/data-test.json');
 var jade = require('jade');
