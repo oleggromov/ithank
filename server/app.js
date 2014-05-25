@@ -18,8 +18,8 @@ var app = express();
 app.set('views', './templates');
 app.set('view engine', 'jade');
 
-// Мидлвари
 app.use(function(req, res, next) {
+	req.state = {};
 	req.isAjax = req.headers['x-requested-with'] === 'XMLHttpRequest';
 	next();
 });
@@ -29,6 +29,19 @@ app.use(app.router);
 app.get('/', require('controllers/main'));
 app.get('/:id', require('controllers/getThank'));
 
+app.use(function(req, res) {
+	var isError = req.state.status === 'error';
+
+	if (req.isAjax) {
+		res.json(req.state);
+	}
+	if (isError && !req.isAjax) {
+		res.send(req.state.code);
+	}
+	if (!isError && !req.isAjax) {
+		res.render('index', req.state.data);
+	}
+});
 
 // Монга
 mongoose.connect(config.db);
