@@ -15,12 +15,6 @@ module.exports = Backbone.View.extend({
 		'click a': 'routeToLink'
 	},
 
-	routeToLink: function(e) {
-		if (this.router.navigateToIfRouted($(e.target).attr('href'))) {
-			e.preventDefault();
-		}
-	},
-
 	constructor: function(options) {
 		Backbone.View.call(this, options);
 
@@ -59,8 +53,12 @@ module.exports = Backbone.View.extend({
 	showThank: function(id) {
 		var model = this.collection.get(id);
 
-		// TODO: подумать, зачем это вообще нужно и что тут триггерить
-		if (!id || !model) throw new Error(JSON.stringify({ id: id, model: model }));
+		// ID проверять вроде бы бессмысленно, т.к. роутер должен распарсить его иначе не сроутить сюда.
+		// При отсутствии модели наверняка запрошен ID, которого нет в локальной коллекции, и надо сходить на сервер.
+		// Скорее всего, это должна делать коллекция. 
+		// Но модели может всё-таки не быть, если благодарность с таким ID удалена, например. Что-то в таком случае делать
+		// точно нужно, но что именно — надо придумать.
+		// if (!model) throw new Error(JSON.stringify({ id: id, model: model }));
 
 		var view = new ItemView({ model: model });
 		this.$fillet.empty().append(view.render().el);
@@ -71,5 +69,15 @@ module.exports = Backbone.View.extend({
 
 	goHome: function() {
 		this.showThank(this.collection.getLastId());
-	}
+	},
+
+	/**
+	 * Проверяет с помощью Роутера, внутренняя ли ссылка, и, если да, делает preventDefault().
+	 * @param  {Object} e Событие
+	 */
+	routeToLink: function(e) {
+		if (this.router.navigateToIfRouted($(e.target).attr('href'))) {
+			e.preventDefault();
+		}
+	},
 });
