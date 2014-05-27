@@ -1,3 +1,7 @@
+/**
+ * Модель — состояние приложения. Сейчас хранит урлы, в будущем будут состояние анимации и прочее.
+ */
+
 module.exports = Backbone.Model.extend({
 	defaults: {
 		urlEarlier: null,

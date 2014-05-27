@@ -1,3 +1,7 @@
+/**
+ * Роутер принимает в конструкторе хэш с роутами вида { rule: RegExp, name: String } 
+ * и сохраняет его на будущее, добавляя роуты по одному.
+ */
 module.exports = Backbone.Router.extend({
 	constructor: function(routes) {
 		_.each(routes, function(rule) {
@@ -7,6 +11,11 @@ module.exports = Backbone.Router.extend({
 		this._routes = routes;
 	},
 
+	/**
+	 * Триггерит событие route:name и делает history.pushState, если ссылка совпадает с одним из роутов.
+	 * @param  {String} link Ссылка / путь от корня
+	 * @return {Boolean} Совершился переход или нет.
+	 */
 	navigateToIfRouted: function(link) {
 		link = link.replace(/^\//, '');
 

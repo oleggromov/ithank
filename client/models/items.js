@@ -1,5 +1,9 @@
+/**
+ * Коллекция благодарностей.
+ */
+
 module.exports = Backbone.Collection.extend({
-	url: '/api/?m=list',
+	url: '',
 	model: require('client/models/item.js'),
 
 	getSiblingsUrls: function(model) {
