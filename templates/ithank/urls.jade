@@ -1,0 +1,9 @@
+- var classes = ['ithank__show', 'ithank__show_earlier']
+if !urlEarlier
+	- classes.push('ithank__show_hidden')
+a(class=classes, href=urlEarlier) Предыдущие
+
+- var classes = ['ithank__show', 'ithank__show_later']
+if !urlLater
+	- classes.push('ithank__show_hidden')
+a(class=classes, href=urlLater) Следующие

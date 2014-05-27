@@ -9,13 +9,5 @@ block app
 		.ithank__fillet
 			include thank/thank
 
-		- var classes = ['ithank__show', 'ithank__show_earlier']
-		if !earlierUrl 
-			- classes.push('ithank__show_hidden')
-		a(class=classes, href=earlierUrl) Предыдущие
-
-		- var classes = ['ithank__show', 'ithank__show_later']
-		if !laterUrl
-			- classes.push('ithank__show_hidden')
-
-		a(class=classes, href=laterUrl) Следующие
+		.ithank__urls
+			include ithank/urls

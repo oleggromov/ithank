@@ -3,6 +3,7 @@ var Items = require('client/models/items.js');
 
 var ItemView = require('client/views/item.js');
 var FormView = require('client/views/form.js');
+var UrlsView = require('client/views/urls.js');
 
 var Router = Backbone.Router.extend({
 	constructor: function(routes) {
@@ -25,6 +26,23 @@ var Router = Backbone.Router.extend({
 		}
 
 		return isRouted;
+	}
+});
+
+var State = Backbone.Model.extend({
+	defaults: {
+		urlEarlier: null,
+		urlLater: null
+	},
+
+	setSiblings: function(siblings) {
+		this.set('urlEarlier', siblings.earlier || null);
+		this.set('urlLater', siblings.later || null);
+		this.trigger('change:urls');
+	},
+
+	resetSiblings: function() {
+		this.defaults();
 	}
 });
 
@@ -58,8 +76,12 @@ var AppView = Backbone.View.extend({
 		this.collection.set(require('../tests/mocks/list-sparse.js'));
 
 		this.$fillet = this.$('.ithank__fillet');
-		this.$earlier = this.$('.ithank__show_earlier');
-		this.$later = this.$('.ithank__show_later');
+
+		this.state = new State();
+		this.urlsView = new UrlsView({ 
+			model: this.state,
+			el: this.$('.ithank__urls')
+		});
 	},
 
 	showForm: function() {
@@ -68,40 +90,24 @@ var AppView = Backbone.View.extend({
 		}
 
 		this.$fillet.empty().append(this.createForm.render().el);
-		this.$earlier.addClass('ithank__show_hidden');
-		this.$later.addClass('ithank__show_hidden');
+		this.state.resetSiblings();
 	},
 
 	showThank: function(id) {
 		var model = this.collection.get(id);
 
+		// TODO: подумать, зачем это вообще нужно и что тут триггерить
 		if (!id || !model) throw new Error(JSON.stringify({ id: id, model: model }));
 
 		var view = new ItemView({ model: model });
 		this.$fillet.empty().append(view.render().el);
 
 		var siblings = this.collection.getSiblingsUrls(model);
-		this._showUrls(siblings);
+		this.state.setSiblings(siblings);
 	},
 
 	goHome: function() {
 		this.showThank(this.collection.getLastId());
-	},
-
-	_showUrls: function(urls) {
-		if (urls.earlier) {
-			this.$earlier.attr('href', urls.earlier);
-			this.$earlier.removeClass('ithank__show_hidden');
-		} else {
-			this.$earlier.addClass('ithank__show_hidden');
-		}
-
-		if (urls.later) {
-			this.$later.attr('href', urls.later);
-			this.$later.removeClass('ithank__show_hidden');
-		} else {
-			this.$later.addClass('ithank__show_hidden');
-		}
 	}
 });
 

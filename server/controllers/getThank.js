@@ -7,8 +7,8 @@ module.exports = function(req, res) {
 		res.render('index', {
 			title: 'Я благодарю',
 			item: data[0],
-			laterUrl: null,
-			earlierUrl: '/8'
+			urlLater: null,
+			urlEarlier: '/8'
 		});
 	}
 };
