@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# Убиваем монгу
+if [ -f run/mongod.pid ]; then
+	cat run/mongod.pid | xargs kill
+	rm run/mongod.pid
+fi

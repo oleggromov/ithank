@@ -68,7 +68,7 @@ module.exports = Backbone.View.extend({
 	},
 
 	goHome: function() {
-		this.showThank(this.collection.getLastId());
+		this.router.navigate(this.collection.getUrlById(this.collection.getLastId()), { trigger: true });
 	},
 
 	/**

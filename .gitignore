@@ -5,8 +5,5 @@ static/
 !node_modules/controllers
 !node_modules/models
 !node_modules/client
-!node_modules/app
 !node_modules/tests
-
-client/templates/
 legacy/

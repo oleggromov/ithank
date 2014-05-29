@@ -1,0 +1,6 @@
+#!/bin/bash
+
+# Запускаем монгу, если не работает
+if [ ! -f run/mongod.pid ]; then
+	mongod --pidfilepath run/mongod.pid --logpath run/mongod.log --logappend &
+fi

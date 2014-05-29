@@ -1,3 +1,4 @@
 module.exports = function(req, res) {
-	res.redirect('/10');
+    // TODO replace with logic
+	res.redirect('/8');
 };
