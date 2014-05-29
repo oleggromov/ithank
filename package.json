@@ -12,7 +12,7 @@
   "scripts": {
     "start": "./scripts/start",
     "stop": "./scripts/stop",
-    "test": "./scripts/start; ./tests/set-test-db && ITHANK_ENV=test gulp test"
+    "test": "./scripts/test"
   },
   "dependencies": {
     "express": "3.4.x",
