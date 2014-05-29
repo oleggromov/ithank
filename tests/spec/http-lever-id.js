@@ -38,10 +38,8 @@ describe('Ручка /:id', function() {
 					jade.renderFile(
 						'templates/index.jade',
 						{
-							urls: {
-								earlier: null,
-								later: '/2'
-							},
+							urlEarlier: null,
+							urlLater: '/2',
 							title: 'Я благодарю',
 							item: data[0]
 						},
