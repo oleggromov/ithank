@@ -30,9 +30,12 @@ function getSiblingsIds(itemThank) {
 	}
 
 	itemThank.getSiblingsIds(function(ids) {
+		var urls = getUrlsByIds(ids);
+
 		deferred.resolve({
 			item: itemThank.toJSON(),
-			urls: getUrlsByIds(ids)
+			urlEarlier: urls.earlier,
+			urlLater: urls.later
 		});
 	});
 	return deferred.promise;

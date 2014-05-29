@@ -1,11 +1,13 @@
 extends layout/layout
 
 block app
-	h1= title
-	include thank/thank
+	.ithank
+		h1.ithank__title
+			a.ithank__title-link(href='/')= title
+		a.ithank__say(href='/write') Скажите спасибо и вы!
 
-	if urls.later
-		a(href=urls.later).layout__arrow.layout__arrow_prev#prev Назад
+		.ithank__fillet
+			include thank/thank
 
-	if urls.earlier
-		a(href=urls.earlier).layout__arrow.layout__arrow_next#next Вперёд
+		.ithank__urls
+			include ithank/urls

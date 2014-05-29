@@ -15,7 +15,7 @@ var logger = new (require('log'))('info', config.output);
 var app = express();
 
 // Шаблоны
-app.set('views', './templates');
+app.set('views', 'templates');
 app.set('view engine', 'jade');
 
 app.use(function(req, res, next) {
@@ -31,8 +31,8 @@ app.use(function(req, res, next) {
 
 // Роуты
 app.use(app.router);
-app.get('/', require('controllers/main'));
 app.get('/:id', require('controllers/getThank'));
+app.get('/', require('controllers/redirect'));
 
 app.use(function(req, res) {
 	if (req.isAjax) {

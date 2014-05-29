@@ -1,40 +1,10 @@
-var ItemModel = require('client/models/item.js');
-var ListCollection = require('client/models/list.js');
+// Вся логика в главной вьюшке.
+var AppView = require('client/views/app.js');
+var app = new AppView;
 
-var ItemView = require('client/views/item.js');
-var ListView = require('client/views/list.js');
-var AppView = require('client/views/layout.js');
-
-var IthankRouter = Backbone.Router.extend({
-	routes: {
-		"": "showList",
-		":id": "showThank"
-	},
-
-	showList: function() {
-		this.list = new ListCollection();
-		this.listView = new ListView({ model: this.list });
-
-		this.list.on('change', this.listView.render, this.listView);
-		this.list.on('add', this.listView.render, this.listView);
-		this.list.on('reset', this.listView.render, this.listView);
-
-		this.list.fetch();	
-	},
-
-	showThank: function(id) {
-		var thank = this.list.findWhere({ id: Number(id) });
-
-		if (thank) {
-			var thankView = new ItemView({ model: thank, el: $('.thank')[0] });
-			thankView.render();
-		} else {
-			console.log('nothing found');
-		}
-	}
+// Запускаем слежение за hashChange и делаем это «тихо», т.к. сервер отдаёт уже отрендеренную страницу
+// и реагировать на первый урл нет необходимости.
+Backbone.history.start({ 
+	pushState: true,
+	silent: true
 });
-
-var router = new IthankRouter();
-Backbone.history.start({ pushState: true });
-
-var app = new AppView(router);
