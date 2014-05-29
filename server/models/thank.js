@@ -1,17 +1,17 @@
 var mongoose = require('mongoose');
 var Q = require('q');
 
-var user = {
+var User = {
 	sex: String,
 	name: String,
 	nameGenetive: String,
 	idVk: Number
 };
 
-var schemaThank = new mongoose.Schema({
+var Schema = new mongoose.Schema({
 	id: Number,
-	from: user,
-	to: user,
+	from: User,
+	to: User,
 	date: {
 		type: Date,
 		default: Date.now
@@ -21,36 +21,40 @@ var schemaThank = new mongoose.Schema({
 	collection: 'thanks'
 });
 
+// Schema.statics содержит методы всей коллекции
+// Schema.methods содержит методы конкретной записи в коллекции
+
 /**
  * Возвращает id «соседей» документа
  * @param {Function} done
  */
-schemaThank.methods.getAssociateIds = function(done) {
+Schema.methods.getSiblingsIds= function(done) {
+	var date = this.date.getTime();
 	var promises = [
 		/**
-		 * [1, 2, ..., 5, ..., 8, 9, 10, 11]
-		 * Делим список на две части, относительно указанного id,
-		 * сортируем каждый по дате и выбираем первые документы каждой части
+		 * Делим список на две части: до и после текущей записи по дате
+		 * и получаем первые записи относитель нее — «соседей»
 		 */
-		this.model('Thank').findOne().where('id').lt(this.id).sort("-date").exec(),
-		this.model('Thank').findOne().where('id').gt(this.id).sort("date").exec()
+		this.model('Thank').findOne().where('date').lt(date).sort("-date").exec(),
+		this.model('Thank').findOne().where('date').gt(date).sort("date").exec()
 	];
 
 	Q.allSettled(promises)
-		.spread(function(getPrev, getNext) {
-			var ids = {};
-			var prev = getPrev.value;
-			var next = getNext.value;
+		.spread(function(earlier, later) {
+			var ids = {
+				earlier: null,
+				later: null
+			};
 
-			if (getPrev.state === 'fulfilled') {
-				ids.prev = (prev) ? prev.get('id') : null;
+			if (earlier.state === 'fulfilled' && earlier.value) {
+				ids.earlier = earlier.value.get('id');
 			}
-			if (getNext.state === 'fulfilled') {
-				ids.next = (next) ? next.get('id') : null;
+			if (later.state === 'fulfilled' && later.value) {
+				ids.later = later.value.get('id');
 			}
 
 			done(ids);
 		});
 };
 
-module.exports = mongoose.model('Thank', schemaThank);
+module.exports = mongoose.model('Thank', Schema);

@@ -19,7 +19,12 @@ app.set('views', './templates');
 app.set('view engine', 'jade');
 
 app.use(function(req, res, next) {
-	req.state = {};
+	res.result = {
+		success: false,
+		code: 404,
+		message: 'Not found',
+		data: {}
+	};
 	req.isAjax = req.headers['x-requested-with'] === 'XMLHttpRequest';
 	next();
 });
@@ -30,16 +35,14 @@ app.get('/', require('controllers/main'));
 app.get('/:id', require('controllers/getThank'));
 
 app.use(function(req, res) {
-	var isError = req.state.status === 'error';
-
 	if (req.isAjax) {
-		res.json(req.state);
-	}
-	if (isError && !req.isAjax) {
-		res.send(req.state.code);
-	}
-	if (!isError && !req.isAjax) {
-		res.render('index', req.state.data);
+		res.send(res.result);
+	} else {
+		if (res.result.success) {
+			res.render(res.result.page, res.result.data);
+		} else {
+			res.send(res.result.code);
+		}
 	}
 });
 

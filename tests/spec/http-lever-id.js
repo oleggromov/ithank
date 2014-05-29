@@ -39,8 +39,8 @@ describe('Ручка /:id', function() {
 						'templates/index.jade',
 						{
 							urls: {
-								prev: null,
-								next: '/2'
+								earlier: null,
+								later: '/2'
 							},
 							title: 'Я благодарю',
 							item: data[0]
@@ -58,11 +58,11 @@ describe('Ручка /:id', function() {
 				.get('/1')
 				.set('X-Requested-With', 'XMLHttpRequest')
 				.end(function(err, res) {
-					res.body.should.have.properties('status', 'code', 'data');
+					res.body.should.have.properties('success', 'code', 'data');
 					res.body.data.item.should.have.properties('id', 'from', 'to', 'reason');
 
 					res.body.code.should.equal(200);
-					res.body.status.should.equal('success');
+					res.body.success.should.be.ok;
 
 					res.body.data.item.id.should
 						.be.a.Number
@@ -104,17 +104,17 @@ describe('Ручка /:id', function() {
 	describe('если попросили несуществующую благодарность', function() {
 		it('вернет 404, если это обычный запрос', function(done) {
 			request(app)
-				.get('/6')
+				.get('/-1')
 				.expect(404, done);
 		});
 		it('вернет JSON определенной структуры, если это ajax-запрос', function(done) {
 			request(app)
-				.get('/6')
+				.get('/100500')
 				.set('X-Requested-With', 'XMLHttpRequest')
 				.end(function(err, res) {
-					res.body.should.have.properties('code', 'status', 'message');
+					res.body.should.have.properties('code', 'success', 'message');
 					res.body.code.should.equal(404);
-					res.body.status.should.equal('error');
+					res.body.success.should.not.be.ok;
 					res.body.message
 						.should.be.a.String
 						.and.be.not.empty;
