@@ -9,4 +9,4 @@ if [ -f run/node.pid ]; then
 fi
 	
 export ITHANK_ENV=development
-node server/app.js &
+node app.js &
