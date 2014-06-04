@@ -1,6 +1,6 @@
 var should = require('should');
 var request = require('supertest');
-var app = require('../../server/app.js');
+var server = require('../../server/app.js')('test', 3001);
 
 var data = require('../mocks/data-test.json');
 var jade = require('jade');
@@ -9,7 +9,7 @@ describe('Ручка /:id', function() {
 
 	describe('в зависимости от заголовка X-Requested-With', function() {
 		it('отдает HTML', function(done) {
-			request(app)
+			request(server)
 				.get('/1')
 				.expect(200)
 				.end(function(err, res) {
@@ -18,7 +18,7 @@ describe('Ручка /:id', function() {
 				});
 		});
 		it('отдает JSON', function(done) {
-			request(app)
+			request(server)
 				.get('/1')
 				.set('X-Requested-With', 'XMLHttpRequest')
 				.end(function(err, res) {
@@ -30,7 +30,7 @@ describe('Ручка /:id', function() {
 
 	describe('если попросили данные о существующей благодарности', function(done) {
 		it('вернет определенную разметку страницы благодарности', function(done) {
-			request(app)
+			request(server)
 				.get('/1')
 				.end(function(err, res) {
 					if (err) throw err;
@@ -52,7 +52,7 @@ describe('Ручка /:id', function() {
 				});
 		});
 		it('вернет JSON определенной структуры, если это ajax-запрос', function(done) {
-			request(app)
+			request(server)
 				.get('/1')
 				.set('X-Requested-With', 'XMLHttpRequest')
 				.end(function(err, res) {
@@ -101,12 +101,12 @@ describe('Ручка /:id', function() {
 
 	describe('если попросили несуществующую благодарность', function() {
 		it('вернет 404, если это обычный запрос', function(done) {
-			request(app)
+			request(server)
 				.get('/-1')
 				.expect(404, done);
 		});
 		it('вернет JSON определенной структуры, если это ajax-запрос', function(done) {
-			request(app)
+			request(server)
 				.get('/100500')
 				.set('X-Requested-With', 'XMLHttpRequest')
 				.end(function(err, res) {
