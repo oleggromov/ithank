@@ -5,7 +5,8 @@ var path = require('path');
 var config = {};
 var common = {
 	root: process.cwd(),
-	log: 'run/node.log'
+	log: 'run/node.log',
+	consts: require('consts.js')
 };
 
 config.development = _.extend(_.clone(common), {
