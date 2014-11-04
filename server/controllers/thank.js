@@ -10,34 +10,32 @@ module.exports = function (req, res, next) {
 	}
 
 	collectionThank.findOne({ id: id }).exec()
-		.then(getSiblingsIds)
+		.then(getSiblings)
 		.then(formResultData(res, next));
 };
 
 /**
- * Достает id соседей благодарности,
+ * Достает соседей благодарности,
  * возращает промис для чейна с .then()
  *
- * @param  {Object} itemThank благодарность
+ * @param  {Object} thank благодарность
  * @return {Object}           промис
  */
-function getSiblingsIds(itemThank) {
+function getSiblings(thank) {
 	var deferred = Q.defer();
 
-	if (!itemThank) {
+	if (!thank) {
 		deferred.resolve(null);
-		return deferred.promise;
+	} else {
+		thank.getSiblings(function(siblings) {
+			deferred.resolve({
+				item: thank.toJSON(),
+				urlEarlier: getUrl(siblings.prev),
+				urlLater: getUrl(siblings.next)
+			});
+		});
 	}
 
-	itemThank.getSiblingsIds(function(ids) {
-		var urls = getUrlsByIds(ids);
-
-		deferred.resolve({
-			item: itemThank.toJSON(),
-			urlEarlier: urls.earlier,
-			urlLater: urls.later
-		});
-	});
 	return deferred.promise;
 }
 
@@ -71,11 +69,11 @@ function formResultData(res, next) {
 	};
 }
 
-// TODO
-// это какой-то хэлпер, который формирует урлы?
-function getUrlsByIds(ids) {
-	return {
-		earlier: (ids.earlier) ? '/' + ids.earlier : null,
-		later: (ids.later) ? '/' + ids.later : null
-	};
+function getUrl(items) {
+	if (!items.length) {
+		return null;
+	}
+	var id = items[0].get('id');
+
+	return (id) ? '/' + id : null;
 }

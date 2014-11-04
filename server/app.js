@@ -25,9 +25,10 @@ function app(env, port) {
 	});
 
 	app.use(app.router);
-	app.get('/list/:dir/:date', require('controllers/getList'));
-	app.get('/:id', require('controllers/getThank'));
-	app.get('/', require('controllers/redirect'));
+
+	app.get('/list/:dir/:date', require('controllers/list'));
+	app.get('/:id', require('controllers/thank'));
+	app.get('/', require('controllers/index'));
 
 	app.use(function(req, res) {
 		if (req.isAjax) {

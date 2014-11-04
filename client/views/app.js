@@ -1,4 +1,3 @@
-var Const = require('const.js');
 var Router = require('client/router.js');
 
 var Item = require('client/models/item.js');
