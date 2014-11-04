@@ -6,5 +6,5 @@ static/
 !node_modules/models
 !node_modules/client
 !node_modules/tests
-!node_modules/const
+!node_modules/const.js
 legacy/
