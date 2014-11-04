@@ -1,3 +1,3 @@
 module.exports = {
-	bulkSize: 10
+	bulkSize: 2
 };

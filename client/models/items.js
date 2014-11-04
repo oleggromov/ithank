@@ -3,8 +3,19 @@
  */
 
 module.exports = Backbone.Collection.extend({
-	url: '/api/list',
+	url: '/list/next/1415132112580',
 	model: require('client/models/item.js'),
+
+	getSome: function() {
+		this.fetch({
+			success: function(collection, response, options) {
+				console.log('success', collection, response, options);
+			},
+			error: function(collection, response, options) {
+				console.log('error', collection, response, options);
+			}
+		})
+	},
 
 	getSiblingsUrls: function(model) {
 		var index = this.indexOf(model);
@@ -23,5 +34,9 @@ module.exports = Backbone.Collection.extend({
 
 	getUrlById: function(id) {
 		return '/' + id;
+	},
+
+	parse: function(response) {
+		return response.data[response.data.dir];
 	}
 });

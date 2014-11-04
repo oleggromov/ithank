@@ -54,22 +54,24 @@ module.exports = Backbone.View.extend({
 	},
 
 	showThank: function(id) {
-		var model = this.collection.get(id);
+		var next = this.collection.getSome();
 
-		// ID проверять вроде бы бессмысленно, т.к. роутер должен распарсить его иначе не сроутить сюда.
-		// При отсутствии модели наверняка запрошен ID, которого нет в локальной коллекции, и надо сходить на сервер.
-		// Скорее всего, это должна делать коллекция. 
-		// Но модели может всё-таки не быть, если благодарность с таким ID удалена, например. Что-то в таком случае делать
-		// точно нужно, но что именно — надо придумать.
-		// if (!model) throw new Error(JSON.stringify({ id: id, model: model }));
+		// var model = this.collection.get(id);
 
-		var view = new ItemView({ model: model });
-		this.$fillet.empty().append(view.render().el);
+		// // ID проверять вроде бы бессмысленно, т.к. роутер должен распарсить его иначе не сроутить сюда.
+		// // При отсутствии модели наверняка запрошен ID, которого нет в локальной коллекции, и надо сходить на сервер.
+		// // Скорее всего, это должна делать коллекция. 
+		// // Но модели может всё-таки не быть, если благодарность с таким ID удалена, например. Что-то в таком случае делать
+		// // точно нужно, но что именно — надо придумать.
+		// // if (!model) throw new Error(JSON.stringify({ id: id, model: model }));
 
-		var siblings = this.collection.getSiblingsUrls(model);
-		this.state.setSiblings(siblings);
+		// var view = new ItemView({ model: model });
+		// this.$fillet.empty().append(view.render().el);
 
-		this.fetchMore(id);
+		// var siblings = this.collection.getSiblingsUrls(model);
+		// this.state.setSiblings(siblings);
+
+		// this.fetchMore(id);
 	},
 
 	goHome: function() {
