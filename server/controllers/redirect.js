@@ -1,4 +1,12 @@
+var collectionThank = require('models/thank');
+
 module.exports = function(req, res) {
-    // TODO replace with logic
-	res.redirect('/8');
+	collectionThank.findOne({}).sort('-id').exec()
+		.then(function(item) {
+			if (!item) {
+				res.redirect('/err/404');
+			}
+
+			res.redirect('/' + item.id);
+		});
 };
