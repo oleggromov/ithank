@@ -31,7 +31,7 @@ module.exports = Backbone.View.extend({
 		this.listenTo(this.router, 'route:thank', this.showThank);
 		this.listenTo(this.router, 'route:form', this.showForm);
 
-		this.collection.set(require('tests/mocks/list-sparse.js'));
+		this.collection.set([]);
 
 		this.$fillet = this.$('.ithank__fillet');
 
