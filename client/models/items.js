@@ -3,7 +3,7 @@
  */
 
 module.exports = Backbone.Collection.extend({
-	url: '',
+	url: '/api/list',
 	model: require('client/models/item.js'),
 
 	getSiblingsUrls: function(model) {

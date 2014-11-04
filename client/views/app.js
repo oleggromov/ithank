@@ -31,7 +31,7 @@ module.exports = Backbone.View.extend({
 		this.listenTo(this.router, 'route:thank', this.showThank);
 		this.listenTo(this.router, 'route:form', this.showForm);
 
-		this.collection.set(require('tests/mocks/list-sparse.js'));
+		this.initFromDom();
 
 		this.$fillet = this.$('.ithank__fillet');
 
@@ -66,6 +66,8 @@ module.exports = Backbone.View.extend({
 
 		var siblings = this.collection.getSiblingsUrls(model);
 		this.state.setSiblings(siblings);
+
+		this.fetchMore(id);
 	},
 
 	goHome: function() {
@@ -81,4 +83,22 @@ module.exports = Backbone.View.extend({
 			e.preventDefault();
 		}
 	},
+
+	initFromDom: function() {
+		this.collection.set(JSON.parse($('#bulk').text()));
+		$('#bulk').remove();
+	},
+
+	fetchMore: function(id) {
+		console.log(this.collection.at(this.collection.length-1).get('date'));
+
+
+
+
+		// this.collection.fetch({
+		// 	data: {
+		// 		page: 10
+		// 	}
+		// });
+	}
 });

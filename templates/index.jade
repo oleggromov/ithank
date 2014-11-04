@@ -11,3 +11,7 @@ block app
 
 		.ithank__urls
 			include ithank/urls
+
+		if bulk
+			script#bulk(type="application/json")!= bulk
+
