@@ -1,7 +1,6 @@
 var mongoose = require('mongoose');
 var Q = require('q');
 var Const = require('const');
-var bulkSize = Const.bulkSize || 10;
 
 var User = {
 	sex: String,
@@ -25,7 +24,7 @@ var Schema = new mongoose.Schema({
 
 /**
  * Возвращает «соседей» документа.
- * Их количество определяется константой bulkSize
+ * Их количество определяется константой Const.bulkSize
  * @param {Function} done
  */
 Schema.methods.getSiblings = function(done) {
@@ -35,8 +34,8 @@ Schema.methods.getSiblings = function(done) {
 		 * Делим список на две части: до и после текущей записи по дате
 		 * и получаем первые записи относитель нее — «соседей»
 		 */
-		this.model('Thank').find().where('date').lt(date).sort("-date").limit(bulkSize).exec(),
-		this.model('Thank').find().where('date').gt(date).sort("date").limit(bulkSize).exec()
+		this.model('Thank').find().where('date').lt(date).sort("-date").limit(Const.bulkSize).exec(),
+		this.model('Thank').find().where('date').gt(date).sort("date").limit(Const.bulkSize).exec()
 	];
 
 	Q.allSettled(promises).spread(function(prev, next) {
