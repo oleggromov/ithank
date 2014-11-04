@@ -31,7 +31,9 @@ module.exports = Backbone.View.extend({
 		this.listenTo(this.router, 'route:thank', this.showThank);
 		this.listenTo(this.router, 'route:form', this.showForm);
 
-		this.initFromDom();
+		if ($('#bulk').length) {
+			this.initFromDom();
+		}
 
 		this.$fillet = this.$('.ithank__fillet');
 
