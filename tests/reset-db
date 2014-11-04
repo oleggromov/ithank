@@ -1,2 +1,10 @@
 #!/bin/bash
-mongoimport -d ithank_dev -c thanks mocks/data-dev.json --jsonArray --drop
+
+if [ -z "$1" ]; then
+	DB="ithank_dev"
+else
+	DB=$1
+fi
+
+echo "Importing tests/mocks/data-dev.json to $DB..."
+mongoimport -d $DB -c thanks tests/mocks/data-dev.json --jsonArray --drop

@@ -1,2 +1,0 @@
-#!/bin/bash
-mongoimport -d ithank_test -c thanks tests/mocks/data-test.json --jsonArray --drop
