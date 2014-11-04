@@ -1,5 +1,7 @@
 var mongoose = require('mongoose');
 var Q = require('q');
+var consts = require('consts');
+var bulkSize = consts.bulkSize || 10;
 
 var User = {
 	sex: String,
@@ -21,40 +23,28 @@ var Schema = new mongoose.Schema({
 	collection: 'thanks'
 });
 
-// Schema.statics содержит методы всей коллекции
-// Schema.methods содержит методы конкретной записи в коллекции
-
 /**
- * Возвращает id «соседей» документа
+ * Возвращает «соседей» документа.
+ * Их количество определяется константой bulkSize
  * @param {Function} done
  */
-Schema.methods.getSiblingsIds= function(done) {
+Schema.methods.getSiblings = function(done) {
 	var date = this.date.getTime();
 	var promises = [
 		/**
 		 * Делим список на две части: до и после текущей записи по дате
 		 * и получаем первые записи относитель нее — «соседей»
 		 */
-		this.model('Thank').findOne().where('date').lt(date).sort("-date").exec(),
-		this.model('Thank').findOne().where('date').gt(date).sort("date").exec()
+		this.model('Thank').find().where('date').lt(date).sort("-date").limit(bulkSize).exec(),
+		this.model('Thank').find().where('date').gt(date).sort("date").limit(bulkSize).exec()
 	];
 
-	Q.allSettled(promises)
-		.spread(function(earlier, later) {
-			var ids = {
-				earlier: null,
-				later: null
-			};
-
-			if (earlier.state === 'fulfilled' && earlier.value) {
-				ids.earlier = earlier.value.get('id');
-			}
-			if (later.state === 'fulfilled' && later.value) {
-				ids.later = later.value.get('id');
-			}
-
-			done(ids);
+	Q.allSettled(promises).spread(function(prev, next) {
+		done({
+			prev: prev.value,
+			next: next.value
 		});
+	});
 };
 
 module.exports = mongoose.model('Thank', Schema);
