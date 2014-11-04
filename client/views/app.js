@@ -32,7 +32,7 @@ module.exports = Backbone.View.extend({
 		this.listenTo(this.router, 'route:form', this.showForm);
 
 		if ($('#bulk').length) {
-			this.initFromDom();
+			this.collection.set(this.getDataFromDom());
 		}
 
 		this.$fillet = this.$('.ithank__fillet');
@@ -86,9 +86,16 @@ module.exports = Backbone.View.extend({
 		}
 	},
 
-	initFromDom: function() {
-		this.collection.set(JSON.parse($('#bulk').text()));
+	/**
+	 * Возвращает данные из script#bulk.
+	 * 
+	 * @return {Array}
+	 */
+	getDataFromDom: function() {
+		var data = JSON.parse($('#bulk').text());
 		$('#bulk').remove();
+
+		return data;
 	},
 
 	fetchMore: function(id) {
