@@ -25,14 +25,10 @@ function app(env, port) {
 	});
 
 	app.use(app.router);
-	app.get('/:id', require('controllers/getThank'));
-	app.get('/', require('controllers/redirect'));
 
-	/** TODO что это?! **/
-	app.get('/api/list', function(req, res) {
-		var beforeDate = req.query.before;
-		var afterDate = req.query.after;
-	});
+	app.get('/', require('controllers/index'));
+	app.get('/:id', require('controllers/thank'));
+	app.get('/list', require('controllers/list'));
 
 	app.use(function(req, res) {
 		if (req.isAjax) {

@@ -6,8 +6,8 @@ module.exports = function(req, res) {
 			res.statusCode = 302;
 
 			if (!item) {
-				res.statusCode = 404;
-				res.redirect('/err/404');
+				res.send(404);
+				return;
 			}
 
 			res.redirect('/' + item.id);
