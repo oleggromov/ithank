@@ -3,7 +3,7 @@
  */
 
 module.exports = Backbone.Collection.extend({
-	url: '/list/next/1415132112580',
+	url: '/list/next/3',
 	model: require('client/models/item.js'),
 
 	getSome: function() {
@@ -37,6 +37,6 @@ module.exports = Backbone.Collection.extend({
 	},
 
 	parse: function(response) {
-		return response.data[response.data.dir];
+		return response;
 	}
 });

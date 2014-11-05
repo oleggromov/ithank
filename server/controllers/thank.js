@@ -7,6 +7,7 @@ module.exports = function (req, res, next) {
 
 	if (!id) {
 		next();
+		return;
 	}
 
 	collectionThank.findOne({ id: id }).exec()
