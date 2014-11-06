@@ -24,8 +24,6 @@ function app(env, port) {
 		next();
 	});
 
-	app.use(app.router);
-
 	app.get('/list/:dir/:id', require('controllers/list'));
 	app.get('/:id', require('controllers/thank'));
 	app.get('/', require('controllers/index'));
