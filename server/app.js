@@ -13,6 +13,10 @@ function app(env, port) {
 	app.set('views', 'templates');
 	app.set('view engine', 'jade');
 
+	if (env === 'development') {
+		app.locals.pretty = true;
+	}
+
 	app.use(function(req, res, next) {
 		res.result = {
 			success: false,
