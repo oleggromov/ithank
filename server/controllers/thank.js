@@ -10,6 +10,11 @@ module.exports = function (req, res, next) {
 		return;
 	}
 
+	// Здесь нужна логика:
+	// AJAX-запрос за 1 благодарностью отфутболиваем (а зачем он нужен? — добавим, когда понадобится).
+	// Обычный HTTP-запрос возвращаем с bulk для первоначальной инициализации: 
+	// [ [...].length == bulkSize, { ID }, [...].length == bulkSize ].
+
 	collectionThank.findOne({ id: id }).exec()
 		.then(getSiblings)
 		.then(formResultData(res, next));
