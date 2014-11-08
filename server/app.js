@@ -28,16 +28,12 @@ function app(env, port) {
 		next();
 	});
 
-	app.get('/list/:dir/:id', require('controllers/list'));
+	app.get('/list/:dir/:timestamp', require('controllers/list'));
 	app.get('/:id', require('controllers/thank'));
 	app.get('/', require('controllers/index'));
 
 	app.use(function(req, res) {
-		if (res.result.isAjax) {
-			res.send(res.result.data);
-			return;
-		}
-		if (req.isAjax) {
+		if (req.isAjax || res.isAjax) {
 			res.send(res.result);
 		} else {
 			if (res.result.success) {
