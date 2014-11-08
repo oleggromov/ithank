@@ -28,7 +28,7 @@ function app(env, port) {
 		next();
 	});
 
-	app.get('/list/:dir/:id', require('controllers/list'));
+	app.get('/list/:dir/:timestamp', require('controllers/list'));
 	app.get('/:id', require('controllers/thank'));
 	app.get('/', require('controllers/index'));
 

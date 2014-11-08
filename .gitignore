@@ -7,4 +7,5 @@ static/
 !node_modules/client
 !node_modules/tests
 !node_modules/const.js
+!node_modules/helpers.js
 legacy/
