@@ -23,8 +23,11 @@ module.exports = {
 		if (info.code === 404) {
 			message = 'Not found';
 		}
-		if (info.message === 500) {
+		if (info.code === 500) {
 			message = 'Mongo failed';
+		}
+		if (info.code === 502) {
+			message = 'Bad gateway'
 		}
 
 		this.code = info.code;

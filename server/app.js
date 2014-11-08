@@ -33,11 +33,7 @@ function app(env, port) {
 	app.get('/', require('controllers/index'));
 
 	app.use(function(req, res) {
-		if (res.result.isAjax) {
-			res.send(res.result.data);
-			return;
-		}
-		if (req.isAjax) {
+		if (req.isAjax || res.isAjax) {
 			res.send(res.result);
 		} else {
 			if (res.result.success) {

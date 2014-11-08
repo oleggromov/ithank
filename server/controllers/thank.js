@@ -1,6 +1,7 @@
 var collectionThank = require('models/thank');
 var Q = require('q');
 var Const = require('const');
+var _ = require('lodash');
 var ServerError = require('helpers').ServerError;
 var preprocessData = require('helpers').preprocessData;
 
@@ -91,12 +92,12 @@ function formResultData(res, next) {
 			var bulk = [].concat(result.earlier, result.item, result.later);
 			preprocessData(bulk);
 
-			data = {
+			_.extend(data, {
 				item: result.item,
 				urlEarlier: getUrl(result.earlier),
 				urlLater: getUrl(result.later),
 				bulk: JSON.stringify(bulk)
-			};
+			});
 		}
 
 		res.result.data = data;
