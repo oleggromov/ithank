@@ -1,8 +1,8 @@
 var collectionThank = require('models/thank');
 var Q = require('q');
-var _ = require('lodash');
 var Const = require('const');
 var ServerError = require('helpers').ServerError;
+var preprocessData = require('helpers').preprocessData;
 
 module.exports = function (req, res, next) {
 	var id = Number(req.params.id);
@@ -87,13 +87,15 @@ function formResultData(res, next) {
 			res.result.message = null;
 			res.result.page = 'index';
 
-			delete result.item._id;
+			preprocessData(result.item);
+			var bulk = [].concat(result.earlier, result.item, result.later);
+			preprocessData(bulk);
 
 			data = {
 				item: result.item,
 				urlEarlier: getUrl(result.earlier),
 				urlLater: getUrl(result.later),
-				bulk: _.flatten(result.earlier, result.item, result.later)
+				bulk: JSON.stringify(bulk)
 			};
 		}
 
